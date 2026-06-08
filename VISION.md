@@ -40,7 +40,7 @@ Compatibility layers can accidentally leak credentials, proxy sensitive
 payloads, or mask API errors. Any future implementation should make request
 paths, logging, and credential handling explicit.
 
-## What We Will Not Merge For Now
+## What We Will Not Merge (For Now)
 
 - Unspecified proxy behavior
 - Credential logging or opaque request forwarding
