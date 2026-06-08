@@ -46,3 +46,6 @@ paths, logging, and credential handling explicit.
 - Credential logging or opaque request forwarding
 - Broad SDK shims without contract tests
 - Claims of drop-in compatibility before behavior is documented
+
+This list is a roadmap guardrail, not a permanent rule.
+Strong user demand and strong technical rationale can change it.
