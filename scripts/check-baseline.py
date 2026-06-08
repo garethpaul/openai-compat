@@ -16,6 +16,7 @@ REQUIRED = [
     "README.md",
     "SECURITY.md",
     "VISION.md",
+    "docs/compatibility-contract.md",
     "docs/readme-overview.svg",
     PLAN,
     "scripts/check-baseline.py",
@@ -63,10 +64,23 @@ def main():
         "placeholder",
         "no implementation",
         "compatibility contract",
+        "docs/compatibility-contract.md",
         "contract tests",
     ]:
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
+
+    contract = read("docs/compatibility-contract.md")
+    for phrase in [
+        "Status: no compatibility behavior is implemented",
+        "Supported Endpoints",
+        "Authentication And Credential Handling",
+        "Error Mapping",
+        "Contract Tests",
+        "Security Checklist",
+    ]:
+        if phrase not in contract:
+            failures.append(f"compatibility contract must include {phrase}")
 
     plan = read(PLAN)
     if "status: completed" not in plan or "make check" not in plan:

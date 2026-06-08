@@ -8,3 +8,5 @@
   folders, and test caches.
 - Documented that compatibility behavior requires a written contract and
   contract tests before implementation.
+- Added `docs/compatibility-contract.md` as the required template for future
+  compatibility behavior.

@@ -13,6 +13,7 @@ This README is based on the checked-in source, manifests, scripts, and repositor
 
 - `.gitignore` - local secrets, logs, dependency, and generated-output ignores
 - `CHANGES.md` - baseline change log
+- `docs/compatibility-contract.md` - required template before compatibility behavior exists
 - `Makefile` - local static verification entry point
 - `README.md` - project overview and local usage notes
 - `SECURITY.md` - security reporting and disclosure guidance
@@ -47,6 +48,8 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - There is no implementation or runtime entry point yet.
 - Treat this repository as a placeholder until the intended compatibility
   contract, language, authentication behavior, and test strategy are documented.
+- Use `docs/compatibility-contract.md` as the required checklist before adding
+  any proxy, adapter, SDK shim, or endpoint behavior.
 
 ## Testing and Verification
 
@@ -72,6 +75,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
 - Run `make check` before changing the sparse baseline or adding tracked
   implementation files.
 - See `SECURITY.md` for vulnerability reporting and safe research guidance.
+- See `docs/compatibility-contract.md` for the required compatibility-contract
+  template.
 - See `CHANGES.md` and `docs/plans/2026-06-08-openai-compat-baseline.md` for
   the current placeholder baseline.
 - See `VISION.md` for project direction and contribution guardrails.

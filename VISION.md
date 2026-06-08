@@ -16,7 +16,8 @@ that becomes useful.
 
 Current baseline: `make check` verifies that the repository remains a sparse
 placeholder with no implementation files until a compatibility contract and
-contract tests are added.
+contract tests are added. The required contract template lives at
+[`docs/compatibility-contract.md`](docs/compatibility-contract.md).
 
 The current focus is:
 
@@ -31,6 +32,7 @@ Priority:
 Next priorities:
 
 - Add a README that defines the compatibility target and non-goals
+- Fill in `docs/compatibility-contract.md` with a concrete endpoint contract
 - Choose a language, package shape, and test strategy
 - Add contract tests before any adapter implementation
 - Define the compatibility contract before introducing request forwarding

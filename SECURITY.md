@@ -30,7 +30,8 @@ Helpful reports include:
 - This repository is currently a placeholder with no implementation. Future
   compatibility code should start with a written compatibility contract and
   contract tests before introducing proxy, SDK shim, or credential-handling
-  behavior.
+  behavior. Use `docs/compatibility-contract.md` as the required security and
+  behavior checklist before adding those surfaces.
 
 
 ## Dependency and Supply Chain Security

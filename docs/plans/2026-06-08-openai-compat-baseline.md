@@ -15,6 +15,8 @@ entry point, compatibility contract, or contract tests.
 - Future code could introduce proxying, credential handling, request logging,
   or SDK shim behavior before the compatibility contract is documented.
 - There was no local verification command for the sparse baseline.
+- There was no concrete template for endpoint support, credential handling,
+  error mapping, or contract tests.
 
 ## Work Completed
 
@@ -24,6 +26,8 @@ entry point, compatibility contract, or contract tests.
   directories, and test caches.
 - Updated docs to state that there is no implementation yet and that future
   compatibility claims need contract tests.
+- Added `docs/compatibility-contract.md` as the required compatibility contract
+  template before any proxy or SDK shim behavior is added.
 
 ## Verification
 
