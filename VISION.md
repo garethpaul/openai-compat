@@ -1,5 +1,8 @@
 ## OpenAI Compat Vision
 
+This document explains the current state and direction of the project.
+Project overview and developer docs: [`README.md`](README.md)
+
 OpenAI Compat is currently a sparse repository with security metadata but no
 documented implementation.
 
