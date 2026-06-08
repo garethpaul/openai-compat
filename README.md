@@ -18,6 +18,8 @@ This README is based on the checked-in source, manifests, scripts, and repositor
 - `README.md` - project overview and local usage notes
 - `SECURITY.md` - security reporting and disclosure guidance
 - `VISION.md` - project direction and maintenance guardrails
+- `docs/compatibility-contract.md` - required contract template for future
+  compatibility behavior
 - `docs/plans/2026-06-08-openai-compat-baseline.md` - completed sparse baseline plan
 - `scripts/check-baseline.py` - static sparse repository baseline checks
 

@@ -8,5 +8,6 @@
   folders, and test caches.
 - Documented that compatibility behavior requires a written contract and
   contract tests before implementation.
-- Added `docs/compatibility-contract.md` as the required template for future
+- Added `docs/compatibility-contract.md` as the required endpoint,
+  authentication, error-mapping, testing, and security checklist for future
   compatibility behavior.
