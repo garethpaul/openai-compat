@@ -27,9 +27,11 @@ Helpful reports include:
 - This repository appears to be a public sample, documentation, or utility project. The active security scope is the code and documentation on the default branch.
 - The repository scan did not identify production authentication, payment, or secret-management code. Treat the project as public sample code unless future changes add sensitive surfaces.
 - No primary dependency manifest was detected in the repository root. If dependencies are added later, include a manifest and prefer reproducible installation instructions.
-- This repository is currently a placeholder with no implementation. Future
-  compatibility code should start with a written compatibility contract and
-  contract tests before introducing proxy, SDK shim, or credential-handling
+- This repository is currently a placeholder with no implementation. There is
+  no OpenAI proxy, API adapter, SDK shim, runtime service, or credential
+  handling code in the current baseline.
+- Future compatibility code should start with a written compatibility contract
+  and contract tests before introducing proxy, SDK shim, or credential-handling
   behavior. Use `docs/compatibility-contract.md` as the required security and
   behavior checklist before adding those surfaces.
 
@@ -38,9 +40,10 @@ Helpful reports include:
 
 Dependency updates should come from trusted package managers and should keep lockfiles in sync when lockfiles exist. Do not commit credentials, private keys, tokens, generated secrets, or machine-local configuration. If a vulnerability depends on a compromised package, typosquatting risk, insecure transitive dependency, or unsafe build step, include the package name, affected version, and the path through which it is used.
 
-For future OpenAI-compatible surfaces, also review request forwarding, response
-translation, error mapping, token redaction, logging, retries, and timeout
-behavior. Run `make check` before changing the sparse baseline.
+For future OpenAI-compatible surfaces, document credential handling, upstream
+request logging, payload retention, response translation, error propagation,
+token redaction, retries, and timeout behavior before claiming compatibility.
+Run `make check` before changing the sparse baseline.
 
 ## Safe Research Guidelines
 

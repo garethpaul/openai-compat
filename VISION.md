@@ -4,7 +4,8 @@ This document explains the current state and direction of the project.
 Project overview and developer docs: [`README.md`](README.md)
 
 OpenAI Compat is currently a sparse repository with security metadata but no
-documented implementation.
+documented implementation. It is a docs-only placeholder, not a runtime,
+adapter, SDK shim, or proxy.
 
 The repository should be treated as a placeholder or archive until its intended
 compatibility target, runtime surface, and tests are documented. The first
@@ -28,6 +29,8 @@ Priority:
 - Avoid naming specific API guarantees that are not implemented
 - Keep the default branch clean and easy to inspect
 - Keep placeholder verification available through `make check`
+- Link future API behavior claims to official OpenAI documentation and local
+  contract tests.
 
 Next priorities:
 
@@ -42,6 +45,7 @@ Contribution rules:
 
 - One PR = one focused documentation, contract, or implementation change.
 - Start with tests for any compatibility promise.
+- Keep `make check` passing while the repository remains docs-only.
 - Keep examples free of secrets.
 - Document unsupported behavior explicitly.
 
