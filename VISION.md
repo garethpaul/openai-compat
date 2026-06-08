@@ -14,6 +14,10 @@ The goal is to prevent accidental assumptions about API behavior while leaving a
 clear path to turn the repository into a maintained compatibility project if
 that becomes useful.
 
+Current baseline: `make check` verifies that the repository remains a sparse
+placeholder with no implementation files until a compatibility contract and
+contract tests are added.
+
 The current focus is:
 
 Priority:
@@ -22,12 +26,14 @@ Priority:
 - Document the intended compatibility scope before adding code
 - Avoid naming specific API guarantees that are not implemented
 - Keep the default branch clean and easy to inspect
+- Keep placeholder verification available through `make check`
 
 Next priorities:
 
 - Add a README that defines the compatibility target and non-goals
 - Choose a language, package shape, and test strategy
 - Add contract tests before any adapter implementation
+- Define the compatibility contract before introducing request forwarding
 - Document supported authentication and error-handling behavior
 
 Contribution rules:

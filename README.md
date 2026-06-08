@@ -11,9 +11,14 @@ This README is based on the checked-in source, manifests, scripts, and repositor
 
 ## Repository Contents
 
+- `.gitignore` - local secrets, logs, dependency, and generated-output ignores
+- `CHANGES.md` - baseline change log
+- `Makefile` - local static verification entry point
 - `README.md` - project overview and local usage notes
 - `SECURITY.md` - security reporting and disclosure guidance
 - `VISION.md` - project direction and maintenance guardrails
+- `docs/plans/2026-06-08-openai-compat-baseline.md` - completed sparse baseline plan
+- `scripts/check-baseline.py` - static sparse repository baseline checks
 
 Additional scan context:
 
@@ -39,25 +44,36 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 
 ## Running or Using the Project
 
-- No single runtime entry point was identified. Start by reading the source files and manifests listed above.
+- There is no implementation or runtime entry point yet.
+- Treat this repository as a placeholder until the intended compatibility
+  contract, language, authentication behavior, and test strategy are documented.
 
 ## Testing and Verification
 
-- No dedicated automated test command was identified from the checked-in files. Verify changes by running the relevant build or manually exercising the sample.
+- `make check`
+- `python3 scripts/check-baseline.py`
 
 When the required SDK or runtime is unavailable, use static checks and source review first, then verify on a machine that has the matching platform toolchain.
 
 ## Configuration and Secrets
 
 - No required secret or credential file was identified in the repository scan. If you add integrations later, keep secrets out of git.
+- Future compatibility work must keep API keys and request payloads out of logs,
+  fixtures, and generated files unless explicit sanitized fixtures are reviewed.
 
 ## Security and Privacy Notes
 
 - The scan did not identify production authentication, payment, or secret-management code. Treat future additions in those areas as security-sensitive.
+- Any future OpenAI-compatible proxy or SDK shim should define a compatibility
+  contract and contract tests before claiming drop-in behavior.
 
 ## Maintenance Notes
 
+- Run `make check` before changing the sparse baseline or adding tracked
+  implementation files.
 - See `SECURITY.md` for vulnerability reporting and safe research guidance.
+- See `CHANGES.md` and `docs/plans/2026-06-08-openai-compat-baseline.md` for
+  the current placeholder baseline.
 - See `VISION.md` for project direction and contribution guardrails.
 
 ## Contributing
