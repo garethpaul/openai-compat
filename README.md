@@ -5,7 +5,14 @@
 
 ## Overview
 
-`garethpaul/openai-compat` is a public sample, documentation, or utility project. The checked-in files describe a public sample, documentation, or utility project with the structure summarized below.
+`garethpaul/openai-compat` is a docs-only placeholder for a possible OpenAI
+compatibility project. It does not ship a runtime, proxy, API adapter, or SDK
+shim, and it does not currently make any compatibility guarantee.
+
+Do not infer compatibility behavior from the repository name alone. Future
+implementation work needs a written compatibility contract, explicit non-goals,
+credential-handling rules, logging and payload-retention rules, error
+propagation behavior, and contract tests before any compatibility claim is made.
 
 This README is based on the checked-in source, manifests, scripts, and repository metadata on the `main` branch. The project language mix found during review was: no dominant source language detected.
 
@@ -18,8 +25,6 @@ This README is based on the checked-in source, manifests, scripts, and repositor
 - `README.md` - project overview and local usage notes
 - `SECURITY.md` - security reporting and disclosure guidance
 - `VISION.md` - project direction and maintenance guardrails
-- `docs/compatibility-contract.md` - required contract template for future
-  compatibility behavior
 - `docs/plans/2026-06-08-openai-compat-baseline.md` - completed sparse baseline plan
 - `scripts/check-baseline.py` - static sparse repository baseline checks
 
@@ -35,6 +40,7 @@ Additional scan context:
 ### Prerequisites
 
 - Git
+- Python 3
 
 ### Setup
 
@@ -48,6 +54,8 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 ## Running or Using the Project
 
 - There is no implementation or runtime entry point yet.
+- This repository does not ship a runtime or OpenAI-compatible service.
+- Do not infer compatibility from the project name or README overview image.
 - Treat this repository as a placeholder until the intended compatibility
   contract, language, authentication behavior, and test strategy are documented.
 - Use `docs/compatibility-contract.md` as the required checklist before adding
@@ -62,7 +70,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
 
 ## Configuration and Secrets
 
-- No required secret or credential file was identified in the repository scan. If you add integrations later, keep secrets out of git.
+- No required secret or credential file was identified in the repository scan.
+  If you add integrations later, keep secrets out of git.
 - Future compatibility work must keep API keys and request payloads out of logs,
   fixtures, and generated files unless explicit sanitized fixtures are reviewed.
 
@@ -71,6 +80,9 @@ When the required SDK or runtime is unavailable, use static checks and source re
 - The scan did not identify production authentication, payment, or secret-management code. Treat future additions in those areas as security-sensitive.
 - Any future OpenAI-compatible proxy or SDK shim should define a compatibility
   contract and contract tests before claiming drop-in behavior.
+- Compatibility layers can leak credentials, retain sensitive prompts, or mask
+  upstream API errors when request forwarding, logging, and response translation
+  are underspecified.
 
 ## Maintenance Notes
 
