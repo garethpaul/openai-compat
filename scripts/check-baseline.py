@@ -79,9 +79,10 @@ def main():
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
 
+    forbidden_snippets = ["sk" + "-", "OPENAI_API" + "_KEY=", "BEGIN " + "PRIVATE KEY"]
     for path in ["README.md", "SECURITY.md", "VISION.md", "docs/compatibility-contract.md"]:
         content = read(path)
-        for forbidden in ["sk-", "OPENAI_API_KEY=", "BEGIN PRIVATE KEY"]:
+        for forbidden in forbidden_snippets:
             if forbidden in content:
                 failures.append(f"{path} must not include credential-looking snippet: {forbidden}")
 
