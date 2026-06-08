@@ -40,7 +40,6 @@ Canonical security policy and reporting:
 
 - [`SECURITY.md`](SECURITY.md)
 
-
 Compatibility layers can accidentally leak credentials, proxy sensitive
 payloads, or mask API errors. Any future implementation should make request
 paths, logging, and credential handling explicit.
