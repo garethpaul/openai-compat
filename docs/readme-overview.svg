@@ -9,28 +9,27 @@
   <circle cx="1110" cy="82" r="18" fill="#10b981"/>
   <circle cx="1014" cy="82" r="18" fill="#f97316"/>
   <text x="76" y="82" font-size="36" fill="#ffffff" font-weight="700">openai-compat</text>
-  <text x="76" y="124" font-size="20" fill="#cbd5e1">public sample, documentation, or</text>
-<text x="76" y="156" font-size="20" fill="#cbd5e1">utility project</text>
-  <text x="76" y="206" font-size="24" fill="#111827">openai-compat &lt;!-- README-OVERVIEW-IMAGE --&gt; Overview</text>
-<text x="76" y="240" font-size="24" fill="#111827">`garethpaul/openai-compat` is a public sample, documentation, or</text>
-<text x="76" y="274" font-size="24" fill="#111827">utility project. The checked-in files describe a public sample,</text>
+  <text x="76" y="124" font-size="20" fill="#cbd5e1">Docs-only compatibility placeholder</text>
+  <text x="76" y="206" font-size="24" fill="#111827">No runtime, proxy, API adapter, or SDK shim yet</text>
+  <text x="76" y="240" font-size="24" fill="#111827">Compatibility claims require a written contract and tests</text>
 
   <rect x="76" y="286" width="316" height="276" rx="14" fill="#eff6ff" stroke="#bfdbfe"/>
   <text x="102" y="328" font-size="24" font-weight="700" fill="#1d4ed8">Code Shape</text>
   <text x="102" y="370" font-size="19" fill="#1f2937">Languages: No dominant source</text>
 <text x="102" y="394" font-size="19" fill="#1f2937">language detected</text>
   <text x="102" y="430" font-size="19" fill="#1f2937">Source: None detected</text>
-  <text x="102" y="490" font-size="19" fill="#1f2937">Manifests: None detected</text>
+  <text x="102" y="490" font-size="19" fill="#1f2937">Manifests: Makefile</text>
 
   <rect x="442" y="286" width="316" height="276" rx="14" fill="#ecfdf5" stroke="#bbf7d0"/>
   <text x="468" y="328" font-size="24" font-weight="700" fill="#047857">How It Runs</text>
-  <text x="468" y="370" font-size="19" fill="#1f2937">Entry points: None detected</text>
-  <text x="468" y="466" font-size="19" fill="#1f2937">Tests: None detected</text>
+  <text x="468" y="370" font-size="19" fill="#1f2937">Entry point: make check</text>
+  <text x="468" y="466" font-size="19" fill="#1f2937">Tests: static docs baseline</text>
 
   <rect x="808" y="286" width="316" height="276" rx="14" fill="#fff7ed" stroke="#fed7aa"/>
   <text x="834" y="328" font-size="24" font-weight="700" fill="#c2410c">Review Focus</text>
-  <text x="834" y="370" font-size="19" fill="#1f2937">Integrations: None detected</text>
-  <text x="834" y="466" font-size="19" fill="#1f2937">Sensitive surfaces: None detected</text>
+  <text x="834" y="370" font-size="19" fill="#1f2937">Future focus: OpenAI compatibility</text>
+  <text x="834" y="466" font-size="19" fill="#1f2937">Guardrails: credentials and logs</text>
+  <text x="834" y="490" font-size="19" fill="#1f2937">Contract tests before behavior claims</text>
 
   <path d="M392 424h50" stroke="#94a3b8" stroke-width="4" stroke-linecap="round"/>
   <path d="M430 412l18 12-18 12z" fill="#94a3b8"/>
