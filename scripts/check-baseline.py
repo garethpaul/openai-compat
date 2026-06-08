@@ -66,9 +66,24 @@ def main():
         "compatibility contract",
         "docs/compatibility-contract.md",
         "contract tests",
+        "docs-only placeholder",
+        "does not ship a runtime",
+        "Do not infer compatibility",
+        "no OpenAI proxy",
+        "credential handling",
+        "request logging",
+        "payload retention",
+        "error propagation",
+        "official OpenAI documentation",
     ]:
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
+
+    for path in ["README.md", "SECURITY.md", "VISION.md", "docs/compatibility-contract.md"]:
+        content = read(path)
+        for forbidden in ["sk-", "OPENAI_API_KEY=", "BEGIN PRIVATE KEY"]:
+            if forbidden in content:
+                failures.append(f"{path} must not include credential-looking snippet: {forbidden}")
 
     contract = read("docs/compatibility-contract.md")
     for phrase in [

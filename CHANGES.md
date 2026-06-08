@@ -11,3 +11,7 @@
 - Added `docs/compatibility-contract.md` as the required endpoint,
   authentication, error-mapping, testing, and security checklist for future
   compatibility behavior.
+- Clarified that the current repository has no runtime, proxy, API adapter, SDK
+  shim, credential-handling behavior, or compatibility guarantee.
+- Tightened future guardrails for request logging, payload retention, error
+  propagation, and official-doc-backed contract tests.

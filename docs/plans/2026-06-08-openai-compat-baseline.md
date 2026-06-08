@@ -24,8 +24,12 @@ entry point, compatibility contract, or contract tests.
   sparse repository shape.
 - Added ignore rules for secrets, logs, generated build output, dependency
   directories, and test caches.
-- Updated docs to state that there is no implementation yet and that future
-  compatibility claims need contract tests.
+- Updated docs to state that there is no implementation, runtime, proxy, API
+  adapter, SDK shim, credential-handling behavior, or compatibility guarantee
+  yet.
+- Documented that future compatibility claims need official-doc-backed
+  contract tests and explicit handling rules for credentials, request logging,
+  payload retention, and error propagation.
 - Added `docs/compatibility-contract.md` as the required compatibility contract
   template before any proxy or SDK shim behavior is added.
 
