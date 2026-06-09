@@ -25,3 +25,5 @@
   calls by default.
 - Added rate-limit and retry contract requirements before future request
   forwarding behavior.
+- Added model mapping policy requirements before future model identifiers,
+  aliases, or fallback behavior.

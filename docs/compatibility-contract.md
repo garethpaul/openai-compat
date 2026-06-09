@@ -58,6 +58,20 @@ Before implementation, define:
 - response normalization rules
 - behavior for partial upstream failures and retries
 
+## Model Mapping Policy
+
+No model mapping, aliasing, fallback, or default-model behavior is implemented
+yet.
+
+Before implementation, define:
+
+- accepted model identifiers for every supported endpoint
+- aliases that are accepted and the exact model identifiers they resolve to
+- behavior for missing, unknown, deprecated, or unsupported model identifiers
+- whether model names ever fall back silently, and tests that prove they do not
+  when silent fallback is unsupported
+- official documentation evidence used to justify each supported model claim
+
 ## Rate Limits And Retries
 
 No rate-limit or retry behavior is implemented yet.

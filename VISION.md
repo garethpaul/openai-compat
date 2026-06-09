@@ -36,6 +36,8 @@ Priority:
 - Keep documentation evidence explicit before endpoint behavior is advertised
 - Keep test fixture policy explicit before compatibility tests are added
 - Keep rate limits and retries explicit before request forwarding exists
+- Keep model mapping policy explicit before model identifiers or aliases are
+  accepted
 
 Next priorities:
 
@@ -49,6 +51,8 @@ Next priorities:
 - Define sanitized fixture provenance before implementation
 - Define rate-limit, retry, timeout, and idempotency-key behavior before
   forwarding requests
+- Define model mapping, aliasing, unsupported-model behavior, and silent
+  fallback rules before accepting model identifiers
 - Convert non-goals into tested contracts only when implementation exists
 
 Contribution rules:

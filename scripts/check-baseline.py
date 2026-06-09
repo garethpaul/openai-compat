@@ -14,6 +14,7 @@ VERSIONING_PLAN = "docs/plans/2026-06-09-compat-versioning-claims.md"
 DOCUMENTATION_EVIDENCE_PLAN = "docs/plans/2026-06-09-documentation-evidence.md"
 TEST_FIXTURE_POLICY_PLAN = "docs/plans/2026-06-09-test-fixture-policy.md"
 RATE_LIMIT_RETRY_PLAN = "docs/plans/2026-06-09-rate-limit-retry-contract.md"
+MODEL_MAPPING_PLAN = "docs/plans/2026-06-09-model-mapping-policy.md"
 REQUIRED = [
     ".gitignore",
     "CHANGES.md",
@@ -29,6 +30,7 @@ REQUIRED = [
     DOCUMENTATION_EVIDENCE_PLAN,
     TEST_FIXTURE_POLICY_PLAN,
     RATE_LIMIT_RETRY_PLAN,
+    MODEL_MAPPING_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -91,6 +93,9 @@ def main():
         "no live API calls",
         "rate limits and retries",
         "idempotency-key",
+        "model mapping policy",
+        "model identifiers",
+        "silent fallback",
         "non-goals",
         "versioning",
     ]:
@@ -119,6 +124,11 @@ def main():
         "upstream 429 responses",
         "maximum retry count, backoff, and jitter behavior",
         "idempotency-key handling",
+        "Model Mapping Policy",
+        "No model mapping",
+        "default-model behavior",
+        "accepted model identifiers",
+        "silent fallback",
         "Versioning And Compatibility Claims",
         "Documentation Evidence",
         "date reviewed",
@@ -150,6 +160,9 @@ def main():
     rate_limit_retry_plan = read(RATE_LIMIT_RETRY_PLAN)
     if "status: completed" not in rate_limit_retry_plan or "Rate Limits And Retries" not in rate_limit_retry_plan:
         failures.append("rate limit retry plan must record completed status and verification")
+    model_mapping_plan = read(MODEL_MAPPING_PLAN)
+    if "status: completed" not in model_mapping_plan or "Model Mapping Policy" not in model_mapping_plan:
+        failures.append("model mapping plan must record completed status and verification")
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")

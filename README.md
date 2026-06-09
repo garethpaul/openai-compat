@@ -13,7 +13,8 @@ Do not infer compatibility behavior from the repository name alone. Future
 implementation work needs a written compatibility contract, explicit non-goals,
 credential-handling rules, logging and payload-retention rules, error
 propagation behavior, rate limits and retries, versioning rules, documentation
-evidence, and contract tests before any compatibility claim is made.
+evidence, model mapping policy, and contract tests before any compatibility
+claim is made.
 
 This README is based on the checked-in source, manifests, scripts, and repository metadata on the `main` branch. The project language mix found during review was: no dominant source language detected.
 
@@ -68,6 +69,9 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
   fixture or contract test before an endpoint is advertised.
 - Rate limits and retries must define upstream 429 behavior, retry budgets,
   backoff, and idempotency-key handling before request forwarding exists.
+- Model mapping policy must define supported model identifiers, aliases,
+  unsupported-model behavior, and silent fallback rules before runtime behavior
+  is advertised.
 - The test fixture policy must define sanitized fixtures, fixture provenance,
   and default tests with no live API calls before behavior is implemented.
 - The contract includes non-goals for unsupported API or SDK compatibility,
@@ -104,6 +108,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
   official documentation and local contract tests.
 - Rate limits and retries must be explicit before future proxy behavior can
   hide or transform upstream throttling.
+- Model mapping policy must be explicit before future compatibility behavior
+  accepts model identifiers or aliases.
 - Test fixture policy must keep sanitized fixtures and no live API calls as the
   default for future contract tests.
 
