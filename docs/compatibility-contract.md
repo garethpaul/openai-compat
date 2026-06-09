@@ -86,6 +86,18 @@ Before implementation, define:
 - release notes that distinguish docs-only placeholders from implemented
   behavior
 
+## Documentation Evidence
+
+No official-documentation evidence is recorded yet.
+
+Before implementation, record:
+
+- official documentation URL or SDK reference used for each endpoint contract
+- date reviewed and upstream API or SDK version target
+- unsupported fields observed in the upstream docs
+- local fixture or contract test that proves each documented behavior
+- owner responsible for refreshing the evidence when upstream docs change
+
 ## Contract Tests
 
 No compatibility behavior may be added without tests that cover:

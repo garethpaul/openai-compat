@@ -19,3 +19,5 @@
 - Tightened future guardrails for request logging, payload retention, error
   propagation, and official-doc-backed contract tests.
 - Added versioning requirements before future compatibility claims can be made.
+- Added documentation-evidence requirements before future endpoint behavior can
+  be advertised.

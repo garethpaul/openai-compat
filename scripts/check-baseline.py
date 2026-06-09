@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PLAN = "docs/plans/2026-06-08-openai-compat-baseline.md"
 NON_GOALS_PLAN = "docs/plans/2026-06-09-compat-non-goals.md"
 VERSIONING_PLAN = "docs/plans/2026-06-09-compat-versioning-claims.md"
+DOCUMENTATION_EVIDENCE_PLAN = "docs/plans/2026-06-09-documentation-evidence.md"
 REQUIRED = [
     ".gitignore",
     "CHANGES.md",
@@ -23,6 +24,7 @@ REQUIRED = [
     PLAN,
     NON_GOALS_PLAN,
     VERSIONING_PLAN,
+    DOCUMENTATION_EVIDENCE_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -79,6 +81,7 @@ def main():
         "payload retention",
         "error propagation",
         "official OpenAI documentation",
+        "documentation evidence",
         "non-goals",
         "versioning",
     ]:
@@ -103,6 +106,9 @@ def main():
         "Authentication And Credential Handling",
         "Error Mapping",
         "Versioning And Compatibility Claims",
+        "Documentation Evidence",
+        "date reviewed",
+        "official documentation URL",
         "Contract Tests",
         "Security Checklist",
     ]:
@@ -118,6 +124,9 @@ def main():
     versioning_plan = read(VERSIONING_PLAN)
     if "status: completed" not in versioning_plan or "Versioning And Compatibility Claims" not in versioning_plan:
         failures.append("versioning plan must record completed status and verification")
+    documentation_evidence_plan = read(DOCUMENTATION_EVIDENCE_PLAN)
+    if "status: completed" not in documentation_evidence_plan or "Documentation Evidence" not in documentation_evidence_plan:
+        failures.append("documentation evidence plan must record completed status and verification")
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")

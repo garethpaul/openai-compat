@@ -33,6 +33,7 @@ Priority:
   contract tests.
 - Keep compatibility non-goals explicit until tests prove implemented behavior
 - Keep versioning requirements explicit before compatibility claims are made
+- Keep documentation evidence explicit before endpoint behavior is advertised
 
 Next priorities:
 
@@ -42,6 +43,7 @@ Next priorities:
 - Add contract tests before any adapter implementation
 - Define the compatibility contract before introducing request forwarding
 - Document supported authentication and error-handling behavior
+- Record official documentation evidence and review dates before implementation
 - Convert non-goals into tested contracts only when implementation exists
 
 Contribution rules:
