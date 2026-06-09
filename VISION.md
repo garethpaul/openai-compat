@@ -35,6 +35,7 @@ Priority:
 - Keep versioning requirements explicit before compatibility claims are made
 - Keep documentation evidence explicit before endpoint behavior is advertised
 - Keep test fixture policy explicit before compatibility tests are added
+- Keep rate limits and retries explicit before request forwarding exists
 
 Next priorities:
 
@@ -46,6 +47,8 @@ Next priorities:
 - Document supported authentication and error-handling behavior
 - Record official documentation evidence and review dates before implementation
 - Define sanitized fixture provenance before implementation
+- Define rate-limit, retry, timeout, and idempotency-key behavior before
+  forwarding requests
 - Convert non-goals into tested contracts only when implementation exists
 
 Contribution rules:
@@ -55,6 +58,7 @@ Contribution rules:
 - Keep `make check` passing while the repository remains docs-only.
 - Keep examples free of secrets.
 - Document unsupported behavior explicitly.
+- Document rate limits and retries before adding proxy behavior.
 
 ## Security And Responsible Use
 

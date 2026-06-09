@@ -23,3 +23,5 @@
   be advertised.
 - Added a test fixture policy requirement for sanitized fixtures and no live API
   calls by default.
+- Added rate-limit and retry contract requirements before future request
+  forwarding behavior.

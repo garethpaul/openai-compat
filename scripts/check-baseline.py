@@ -13,6 +13,7 @@ NON_GOALS_PLAN = "docs/plans/2026-06-09-compat-non-goals.md"
 VERSIONING_PLAN = "docs/plans/2026-06-09-compat-versioning-claims.md"
 DOCUMENTATION_EVIDENCE_PLAN = "docs/plans/2026-06-09-documentation-evidence.md"
 TEST_FIXTURE_POLICY_PLAN = "docs/plans/2026-06-09-test-fixture-policy.md"
+RATE_LIMIT_RETRY_PLAN = "docs/plans/2026-06-09-rate-limit-retry-contract.md"
 REQUIRED = [
     ".gitignore",
     "CHANGES.md",
@@ -27,6 +28,7 @@ REQUIRED = [
     VERSIONING_PLAN,
     DOCUMENTATION_EVIDENCE_PLAN,
     TEST_FIXTURE_POLICY_PLAN,
+    RATE_LIMIT_RETRY_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -87,6 +89,8 @@ def main():
         "test fixture policy",
         "sanitized fixtures",
         "no live API calls",
+        "rate limits and retries",
+        "idempotency-key",
         "non-goals",
         "versioning",
     ]:
@@ -110,6 +114,11 @@ def main():
         "streaming, file uploads, fine-tuning, batch jobs, or webhook behavior",
         "Authentication And Credential Handling",
         "Error Mapping",
+        "Rate Limits And Retries",
+        "No rate-limit or retry behavior is implemented yet.",
+        "upstream 429 responses",
+        "maximum retry count, backoff, and jitter behavior",
+        "idempotency-key handling",
         "Versioning And Compatibility Claims",
         "Documentation Evidence",
         "date reviewed",
@@ -138,6 +147,9 @@ def main():
     test_fixture_policy_plan = read(TEST_FIXTURE_POLICY_PLAN)
     if "status: completed" not in test_fixture_policy_plan or "Test Fixture Policy" not in test_fixture_policy_plan:
         failures.append("test fixture policy plan must record completed status and verification")
+    rate_limit_retry_plan = read(RATE_LIMIT_RETRY_PLAN)
+    if "status: completed" not in rate_limit_retry_plan or "Rate Limits And Retries" not in rate_limit_retry_plan:
+        failures.append("rate limit retry plan must record completed status and verification")
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")

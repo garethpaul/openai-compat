@@ -58,6 +58,19 @@ Before implementation, define:
 - response normalization rules
 - behavior for partial upstream failures and retries
 
+## Rate Limits And Retries
+
+No rate-limit or retry behavior is implemented yet.
+
+Before implementation, define:
+
+- whether upstream 429 responses and rate-limit headers pass through unchanged
+  or are translated
+- retryable methods and error classes
+- maximum retry count, backoff, and jitter behavior
+- timeout budget across retries
+- idempotency-key handling for requests that may be retried
+
 ## Error Mapping
 
 No error mapping is implemented yet.

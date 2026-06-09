@@ -12,8 +12,8 @@ shim, and it does not currently make any compatibility guarantee.
 Do not infer compatibility behavior from the repository name alone. Future
 implementation work needs a written compatibility contract, explicit non-goals,
 credential-handling rules, logging and payload-retention rules, error
-propagation behavior, versioning rules, documentation evidence, and contract
-tests before any compatibility claim is made.
+propagation behavior, rate limits and retries, versioning rules, documentation
+evidence, and contract tests before any compatibility claim is made.
 
 This README is based on the checked-in source, manifests, scripts, and repository metadata on the `main` branch. The project language mix found during review was: no dominant source language detected.
 
@@ -66,6 +66,8 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - Documentation evidence must identify the official documentation source, date
   reviewed, upstream version target, unsupported fields, and matching local
   fixture or contract test before an endpoint is advertised.
+- Rate limits and retries must define upstream 429 behavior, retry budgets,
+  backoff, and idempotency-key handling before request forwarding exists.
 - The test fixture policy must define sanitized fixtures, fixture provenance,
   and default tests with no live API calls before behavior is implemented.
 - The contract includes non-goals for unsupported API or SDK compatibility,
@@ -100,6 +102,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
   compatibility behavior.
 - Documentation evidence must connect future compatibility claims to reviewed
   official documentation and local contract tests.
+- Rate limits and retries must be explicit before future proxy behavior can
+  hide or transform upstream throttling.
 - Test fixture policy must keep sanitized fixtures and no live API calls as the
   default for future contract tests.
 

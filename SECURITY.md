@@ -45,10 +45,11 @@ Dependency updates should come from trusted package managers and should keep loc
 
 For future OpenAI-compatible surfaces, document credential handling, upstream
 request logging, payload retention, response translation, error propagation,
-token redaction, retries, timeout behavior, versioning, and documentation
-evidence before claiming compatibility. Future test fixture policy should
-require sanitized fixtures, fixture provenance, and no live API calls by
-default.
+token redaction, rate limits and retries, timeout behavior, versioning, and
+documentation evidence before claiming compatibility. Future test fixture policy
+should require sanitized fixtures, fixture provenance, and no live API calls by
+default. Retry behavior should define upstream 429 handling, backoff, retry
+budgets, and idempotency-key handling before request forwarding exists.
 Run `make check` before changing the sparse baseline.
 
 ## Safe Research Guidelines
