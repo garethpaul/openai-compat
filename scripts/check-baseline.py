@@ -15,6 +15,7 @@ DOCUMENTATION_EVIDENCE_PLAN = "docs/plans/2026-06-09-documentation-evidence.md"
 TEST_FIXTURE_POLICY_PLAN = "docs/plans/2026-06-09-test-fixture-policy.md"
 RATE_LIMIT_RETRY_PLAN = "docs/plans/2026-06-09-rate-limit-retry-contract.md"
 MODEL_MAPPING_PLAN = "docs/plans/2026-06-09-model-mapping-policy.md"
+MAKE_GATE_PLAN = "docs/plans/2026-06-09-make-gate-aliases.md"
 REQUIRED = [
     ".gitignore",
     "CHANGES.md",
@@ -31,6 +32,7 @@ REQUIRED = [
     TEST_FIXTURE_POLICY_PLAN,
     RATE_LIMIT_RETRY_PLAN,
     MODEL_MAPPING_PLAN,
+    MAKE_GATE_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -67,11 +69,21 @@ def main():
             failures.append(f".gitignore must include {expected}")
 
     makefile = read("Makefile")
-    if "python3 scripts/check-baseline.py" not in makefile:
-        failures.append("Makefile must expose the static checker")
+    for phrase in [
+        ".PHONY: build check lint static-check test verify",
+        "check: verify",
+        "verify: static-check",
+        "lint test build: static-check",
+        "PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check-baseline.py",
+    ]:
+        if phrase not in makefile:
+            failures.append(f"Makefile must include standard gate alias: {phrase}")
 
     docs = "\n".join(read(path) for path in ["README.md", "SECURITY.md", "VISION.md"])
     for phrase in [
+        "make lint",
+        "make test",
+        "make build",
         "make check",
         "placeholder",
         "no implementation",
@@ -101,6 +113,10 @@ def main():
     ]:
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
+    changes = read("CHANGES.md")
+    for phrase in ["make lint", "make test", "make build", "make check"]:
+        if phrase not in changes:
+            failures.append(f"CHANGES must mention {phrase}")
 
     forbidden_snippets = ["sk" + "-", "OPENAI_API" + "_KEY=", "BEGIN " + "PRIVATE KEY"]
     for path in ["README.md", "SECURITY.md", "VISION.md", "docs/compatibility-contract.md"]:
@@ -163,6 +179,10 @@ def main():
     model_mapping_plan = read(MODEL_MAPPING_PLAN)
     if "status: completed" not in model_mapping_plan or "Model Mapping Policy" not in model_mapping_plan:
         failures.append("model mapping plan must record completed status and verification")
+    make_gate_plan_path = ROOT / MAKE_GATE_PLAN
+    make_gate_plan = make_gate_plan_path.read_text(encoding="utf-8") if make_gate_plan_path.exists() else ""
+    if "status: completed" not in make_gate_plan or "make lint" not in make_gate_plan or "make build" not in make_gate_plan:
+        failures.append("make gate alias plan must record completed status and verification")
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")

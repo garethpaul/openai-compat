@@ -27,3 +27,5 @@
   forwarding behavior.
 - Added model mapping policy requirements before future model identifiers,
   aliases, or fallback behavior.
+- Added `make lint`, `make test`, and `make build` aliases so the standard
+  gate commands run the same SDK-free sparse baseline as `make check`.

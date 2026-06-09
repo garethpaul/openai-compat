@@ -52,7 +52,8 @@ and silent fallback rules before runtime behavior exists. Future test fixture
 policy should require sanitized fixtures, fixture provenance, and no live API
 calls by default. Retry behavior should define upstream 429 handling, backoff,
 retry budgets, and idempotency-key handling before request forwarding exists.
-Run `make check` before changing the sparse baseline.
+Run `make lint`, `make test`, `make build`, and `make check` before changing
+the sparse baseline.
 
 ## Safe Research Guidelines
 

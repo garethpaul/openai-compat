@@ -15,9 +15,10 @@ The goal is to prevent accidental assumptions about API behavior while leaving a
 clear path to turn the repository into a maintained compatibility project if
 that becomes useful.
 
-Current baseline: `make check` verifies that the repository remains a sparse
-placeholder with no implementation files until a compatibility contract and
-contract tests are added. The required contract template lives at
+Current baseline: `make lint`, `make test`, `make build`, and `make check`
+verify that the repository remains a sparse placeholder with no implementation
+files until a compatibility contract and contract tests are added. The required
+contract template lives at
 [`docs/compatibility-contract.md`](docs/compatibility-contract.md).
 
 The current focus is:
@@ -29,6 +30,8 @@ Priority:
 - Avoid naming specific API guarantees that are not implemented
 - Keep the default branch clean and easy to inspect
 - Keep placeholder verification available through `make check`
+- Keep `make lint`, `make test`, `make build`, and `make check` on the
+  SDK-free sparse baseline
 - Link future API behavior claims to official OpenAI documentation and local
   contract tests.
 - Keep compatibility non-goals explicit until tests prove implemented behavior
@@ -59,7 +62,8 @@ Contribution rules:
 
 - One PR = one focused documentation, contract, or implementation change.
 - Start with tests for any compatibility promise.
-- Keep `make check` passing while the repository remains docs-only.
+- Keep `make lint`, `make test`, `make build`, and `make check` passing while
+  the repository remains docs-only.
 - Keep examples free of secrets.
 - Document unsupported behavior explicitly.
 - Document rate limits and retries before adding proxy behavior.
