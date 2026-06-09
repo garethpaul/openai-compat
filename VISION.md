@@ -34,6 +34,7 @@ Priority:
 - Keep compatibility non-goals explicit until tests prove implemented behavior
 - Keep versioning requirements explicit before compatibility claims are made
 - Keep documentation evidence explicit before endpoint behavior is advertised
+- Keep test fixture policy explicit before compatibility tests are added
 
 Next priorities:
 
@@ -44,6 +45,7 @@ Next priorities:
 - Define the compatibility contract before introducing request forwarding
 - Document supported authentication and error-handling behavior
 - Record official documentation evidence and review dates before implementation
+- Define sanitized fixture provenance before implementation
 - Convert non-goals into tested contracts only when implementation exists
 
 Contribution rules:

@@ -46,7 +46,9 @@ Dependency updates should come from trusted package managers and should keep loc
 For future OpenAI-compatible surfaces, document credential handling, upstream
 request logging, payload retention, response translation, error propagation,
 token redaction, retries, timeout behavior, versioning, and documentation
-evidence before claiming compatibility.
+evidence before claiming compatibility. Future test fixture policy should
+require sanitized fixtures, fixture provenance, and no live API calls by
+default.
 Run `make check` before changing the sparse baseline.
 
 ## Safe Research Guidelines

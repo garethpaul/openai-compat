@@ -12,6 +12,7 @@ PLAN = "docs/plans/2026-06-08-openai-compat-baseline.md"
 NON_GOALS_PLAN = "docs/plans/2026-06-09-compat-non-goals.md"
 VERSIONING_PLAN = "docs/plans/2026-06-09-compat-versioning-claims.md"
 DOCUMENTATION_EVIDENCE_PLAN = "docs/plans/2026-06-09-documentation-evidence.md"
+TEST_FIXTURE_POLICY_PLAN = "docs/plans/2026-06-09-test-fixture-policy.md"
 REQUIRED = [
     ".gitignore",
     "CHANGES.md",
@@ -25,6 +26,7 @@ REQUIRED = [
     NON_GOALS_PLAN,
     VERSIONING_PLAN,
     DOCUMENTATION_EVIDENCE_PLAN,
+    TEST_FIXTURE_POLICY_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -82,6 +84,9 @@ def main():
         "error propagation",
         "official OpenAI documentation",
         "documentation evidence",
+        "test fixture policy",
+        "sanitized fixtures",
+        "no live API calls",
         "non-goals",
         "versioning",
     ]:
@@ -110,6 +115,9 @@ def main():
         "date reviewed",
         "official documentation URL",
         "Contract Tests",
+        "Test Fixture Policy",
+        "fixture provenance",
+        "no live API calls",
         "Security Checklist",
     ]:
         if phrase not in contract:
@@ -127,6 +135,9 @@ def main():
     documentation_evidence_plan = read(DOCUMENTATION_EVIDENCE_PLAN)
     if "status: completed" not in documentation_evidence_plan or "Documentation Evidence" not in documentation_evidence_plan:
         failures.append("documentation evidence plan must record completed status and verification")
+    test_fixture_policy_plan = read(TEST_FIXTURE_POLICY_PLAN)
+    if "status: completed" not in test_fixture_policy_plan or "Test Fixture Policy" not in test_fixture_policy_plan:
+        failures.append("test fixture policy plan must record completed status and verification")
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")

@@ -98,6 +98,19 @@ Before implementation, record:
 - local fixture or contract test that proves each documented behavior
 - owner responsible for refreshing the evidence when upstream docs change
 
+## Test Fixture Policy
+
+No compatibility fixtures are recorded yet.
+
+Before implementation, define:
+
+- sanitized request and response fixtures for every supported endpoint
+- how credentials, prompts, files, metadata, and error bodies are redacted
+- fixture provenance, including whether each fixture is synthetic or derived
+  from reviewed documentation
+- default test behavior that uses local fakes and makes no live API calls
+- refresh process for fixtures when upstream documentation or behavior changes
+
 ## Contract Tests
 
 No compatibility behavior may be added without tests that cover:
@@ -108,6 +121,8 @@ No compatibility behavior may be added without tests that cover:
 - upstream error mapping
 - timeout or retry behavior when implemented
 - redaction of credentials and sensitive payload fragments
+- fixture policy compliance for sanitized test data and no live API calls by
+  default
 
 Tests should use sanitized fixtures or local fakes. They should not call a live
 API by default.

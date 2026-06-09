@@ -21,3 +21,5 @@
 - Added versioning requirements before future compatibility claims can be made.
 - Added documentation-evidence requirements before future endpoint behavior can
   be advertised.
+- Added a test fixture policy requirement for sanitized fixtures and no live API
+  calls by default.

@@ -66,6 +66,8 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - Documentation evidence must identify the official documentation source, date
   reviewed, upstream version target, unsupported fields, and matching local
   fixture or contract test before an endpoint is advertised.
+- The test fixture policy must define sanitized fixtures, fixture provenance,
+  and default tests with no live API calls before behavior is implemented.
 - The contract includes non-goals for unsupported API or SDK compatibility,
   upstream forwarding, credential exchange, request retention, streaming, file,
   fine-tuning, batch, webhook, and model-equivalence behavior.
@@ -98,6 +100,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
   compatibility behavior.
 - Documentation evidence must connect future compatibility claims to reviewed
   official documentation and local contract tests.
+- Test fixture policy must keep sanitized fixtures and no live API calls as the
+  default for future contract tests.
 
 ## Maintenance Notes
 
