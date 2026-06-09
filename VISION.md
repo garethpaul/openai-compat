@@ -32,6 +32,7 @@ Priority:
 - Link future API behavior claims to official OpenAI documentation and local
   contract tests.
 - Keep compatibility non-goals explicit until tests prove implemented behavior
+- Keep versioning requirements explicit before compatibility claims are made
 
 Next priorities:
 

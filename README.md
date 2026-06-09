@@ -12,7 +12,8 @@ shim, and it does not currently make any compatibility guarantee.
 Do not infer compatibility behavior from the repository name alone. Future
 implementation work needs a written compatibility contract, explicit non-goals,
 credential-handling rules, logging and payload-retention rules, error
-propagation behavior, and contract tests before any compatibility claim is made.
+propagation behavior, versioning rules, and contract tests before any
+compatibility claim is made.
 
 This README is based on the checked-in source, manifests, scripts, and repository metadata on the `main` branch. The project language mix found during review was: no dominant source language detected.
 
@@ -60,6 +61,8 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
   contract, language, authentication behavior, and test strategy are documented.
 - Use `docs/compatibility-contract.md` as the required checklist before adding
   any proxy, adapter, SDK shim, or endpoint behavior.
+- Versioning and compatibility claims must identify the implemented contract
+  version before any runtime behavior is advertised.
 - The contract includes non-goals for unsupported API or SDK compatibility,
   upstream forwarding, credential exchange, request retention, streaming, file,
   fine-tuning, batch, webhook, and model-equivalence behavior.
@@ -88,6 +91,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
 - Compatibility layers can leak credentials, retain sensitive prompts, or mask
   upstream API errors when request forwarding, logging, and response translation
   are underspecified.
+- Versioning must distinguish docs-only placeholders from implemented
+  compatibility behavior.
 
 ## Maintenance Notes
 

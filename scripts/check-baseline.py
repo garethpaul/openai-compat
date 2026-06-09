@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 PLAN = "docs/plans/2026-06-08-openai-compat-baseline.md"
 NON_GOALS_PLAN = "docs/plans/2026-06-09-compat-non-goals.md"
+VERSIONING_PLAN = "docs/plans/2026-06-09-compat-versioning-claims.md"
 REQUIRED = [
     ".gitignore",
     "CHANGES.md",
@@ -21,6 +22,7 @@ REQUIRED = [
     "docs/readme-overview.svg",
     PLAN,
     NON_GOALS_PLAN,
+    VERSIONING_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -78,6 +80,7 @@ def main():
         "error propagation",
         "official OpenAI documentation",
         "non-goals",
+        "versioning",
     ]:
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
@@ -99,6 +102,7 @@ def main():
         "streaming, file uploads, fine-tuning, batch jobs, or webhook behavior",
         "Authentication And Credential Handling",
         "Error Mapping",
+        "Versioning And Compatibility Claims",
         "Contract Tests",
         "Security Checklist",
     ]:
@@ -111,6 +115,9 @@ def main():
     non_goals_plan = read(NON_GOALS_PLAN)
     if "status: completed" not in non_goals_plan or "Non-Goals Until Implemented" not in non_goals_plan:
         failures.append("non-goals plan must record completed status and verification")
+    versioning_plan = read(VERSIONING_PLAN)
+    if "status: completed" not in versioning_plan or "Versioning And Compatibility Claims" not in versioning_plan:
+        failures.append("versioning plan must record completed status and verification")
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")

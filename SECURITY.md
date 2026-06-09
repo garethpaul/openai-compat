@@ -45,7 +45,8 @@ Dependency updates should come from trusted package managers and should keep loc
 
 For future OpenAI-compatible surfaces, document credential handling, upstream
 request logging, payload retention, response translation, error propagation,
-token redaction, retries, and timeout behavior before claiming compatibility.
+token redaction, retries, timeout behavior, and versioning before claiming
+compatibility.
 Run `make check` before changing the sparse baseline.
 
 ## Safe Research Guidelines

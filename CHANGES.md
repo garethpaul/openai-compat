@@ -18,3 +18,4 @@
   and model-equivalence behavior.
 - Tightened future guardrails for request logging, payload retention, error
   propagation, and official-doc-backed contract tests.
+- Added versioning requirements before future compatibility claims can be made.

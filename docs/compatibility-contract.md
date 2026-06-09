@@ -70,6 +70,22 @@ Before implementation, define:
 - retryable versus non-retryable failures
 - redaction behavior for error bodies
 
+## Versioning And Compatibility Claims
+
+No versioned compatibility target is declared yet.
+
+Before implementation, define:
+
+- package, API, or service version that introduces each compatibility claim
+- upstream API or SDK version, date, and official documentation reference used
+  for the contract
+- compatibility matrix for supported endpoints and intentionally unsupported
+  fields
+- deprecation policy for changed request shapes, response shapes, or error
+  mappings
+- release notes that distinguish docs-only placeholders from implemented
+  behavior
+
 ## Contract Tests
 
 No compatibility behavior may be added without tests that cover:
