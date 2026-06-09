@@ -29,3 +29,5 @@
   aliases, or fallback behavior.
 - Added `make lint`, `make test`, and `make build` aliases so the standard
   gate commands run the same SDK-free sparse baseline as `make check`.
+- Added a Python bytecode guard so sparse verification catches leftover local
+  `__pycache__` or `.pyc` output.

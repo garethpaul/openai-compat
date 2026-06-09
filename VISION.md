@@ -41,6 +41,7 @@ Priority:
 - Keep rate limits and retries explicit before request forwarding exists
 - Keep model mapping policy explicit before model identifiers or aliases are
   accepted
+- Keep verification workspaces free of generated Python bytecode
 
 Next priorities:
 
@@ -67,6 +68,7 @@ Contribution rules:
 - Keep examples free of secrets.
 - Document unsupported behavior explicitly.
 - Document rate limits and retries before adding proxy behavior.
+- Preserve the Python bytecode guard when changing sparse verification.
 
 ## Security And Responsible Use
 

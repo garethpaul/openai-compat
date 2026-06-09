@@ -81,6 +81,8 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - The contract includes non-goals for unsupported API or SDK compatibility,
   upstream forwarding, credential exchange, request retention, streaming, file,
   fine-tuning, batch, webhook, and model-equivalence behavior.
+- Python bytecode should not remain after local verification gates; remove
+  `__pycache__` or `.pyc` output before considering the workspace complete.
 
 ## Testing and Verification
 
@@ -98,6 +100,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
   If you add integrations later, keep secrets out of git.
 - Future compatibility work must keep API keys and request payloads out of logs,
   fixtures, and generated files unless explicit sanitized fixtures are reviewed.
+- Generated Python bytecode is local tooling output and should not be committed
+  or left behind after `make check`.
 
 ## Security and Privacy Notes
 

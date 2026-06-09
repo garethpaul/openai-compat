@@ -16,6 +16,7 @@ TEST_FIXTURE_POLICY_PLAN = "docs/plans/2026-06-09-test-fixture-policy.md"
 RATE_LIMIT_RETRY_PLAN = "docs/plans/2026-06-09-rate-limit-retry-contract.md"
 MODEL_MAPPING_PLAN = "docs/plans/2026-06-09-model-mapping-policy.md"
 MAKE_GATE_PLAN = "docs/plans/2026-06-09-make-gate-aliases.md"
+PYTHON_BYTECODE_PLAN = "docs/plans/2026-06-09-python-bytecode-guard.md"
 REQUIRED = [
     ".gitignore",
     "CHANGES.md",
@@ -33,6 +34,7 @@ REQUIRED = [
     RATE_LIMIT_RETRY_PLAN,
     MODEL_MAPPING_PLAN,
     MAKE_GATE_PLAN,
+    PYTHON_BYTECODE_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -67,6 +69,13 @@ def main():
     for expected in [".env", ".env.*", "*.log", "__pycache__/", "node_modules/", "tmp/"]:
         if expected not in gitignore:
             failures.append(f".gitignore must include {expected}")
+    bytecode_paths = sorted(
+        str(path.relative_to(ROOT))
+        for pattern in ("__pycache__", "*.pyc")
+        for path in ROOT.rglob(pattern)
+    )
+    if bytecode_paths:
+        failures.append("generated Python bytecode must not remain after gates: " + ", ".join(bytecode_paths[:5]))
 
     makefile = read("Makefile")
     for phrase in [
@@ -110,6 +119,7 @@ def main():
         "silent fallback",
         "non-goals",
         "versioning",
+        "Python bytecode",
     ]:
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
@@ -183,6 +193,9 @@ def main():
     make_gate_plan = make_gate_plan_path.read_text(encoding="utf-8") if make_gate_plan_path.exists() else ""
     if "status: completed" not in make_gate_plan or "make lint" not in make_gate_plan or "make build" not in make_gate_plan:
         failures.append("make gate alias plan must record completed status and verification")
+    python_bytecode_plan = read(PYTHON_BYTECODE_PLAN)
+    if "status: completed" not in python_bytecode_plan or "Python bytecode" not in python_bytecode_plan:
+        failures.append("Python bytecode plan must record completed status and verification")
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")
