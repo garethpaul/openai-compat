@@ -31,6 +31,7 @@ Priority:
 - Keep placeholder verification available through `make check`
 - Link future API behavior claims to official OpenAI documentation and local
   contract tests.
+- Keep compatibility non-goals explicit until tests prove implemented behavior
 
 Next priorities:
 
@@ -40,6 +41,7 @@ Next priorities:
 - Add contract tests before any adapter implementation
 - Define the compatibility contract before introducing request forwarding
 - Document supported authentication and error-handling behavior
+- Convert non-goals into tested contracts only when implementation exists
 
 Contribution rules:
 

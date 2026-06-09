@@ -13,5 +13,8 @@
   compatibility behavior.
 - Clarified that the current repository has no runtime, proxy, API adapter, SDK
   shim, credential-handling behavior, or compatibility guarantee.
+- Added explicit compatibility non-goals for unimplemented forwarding,
+  credential exchange, retention, streaming, file, fine-tuning, batch, webhook,
+  and model-equivalence behavior.
 - Tightened future guardrails for request logging, payload retention, error
   propagation, and official-doc-backed contract tests.

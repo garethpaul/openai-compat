@@ -20,6 +20,19 @@ Before implementation, define each endpoint with:
 - timeout, retry, and rate-limit behavior
 - compatibility tests that prove the behavior
 
+## Non-Goals Until Implemented
+
+Until a specific endpoint contract and tests exist, this repository does not
+claim support for:
+
+- drop-in API or SDK compatibility
+- live upstream request forwarding
+- credential exchange, persistence, or proxy-managed API keys
+- request or response retention, analytics, tracing, or replay
+- streaming, file uploads, fine-tuning, batch jobs, or webhook behavior
+- model equivalence, pricing equivalence, latency equivalence, or quota
+  equivalence
+
 ## Authentication And Credential Handling
 
 No credential handling is implemented yet.

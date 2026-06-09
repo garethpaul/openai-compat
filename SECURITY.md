@@ -34,6 +34,9 @@ Helpful reports include:
   and contract tests before introducing proxy, SDK shim, or credential-handling
   behavior. Use `docs/compatibility-contract.md` as the required security and
   behavior checklist before adding those surfaces.
+- Keep non-goals explicit for unsupported forwarding, credential exchange,
+  request retention, streaming, file, fine-tuning, batch, webhook, and model
+  equivalence behavior until tests prove otherwise.
 
 
 ## Dependency and Supply Chain Security

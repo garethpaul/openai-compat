@@ -60,6 +60,9 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
   contract, language, authentication behavior, and test strategy are documented.
 - Use `docs/compatibility-contract.md` as the required checklist before adding
   any proxy, adapter, SDK shim, or endpoint behavior.
+- The contract includes non-goals for unsupported API or SDK compatibility,
+  upstream forwarding, credential exchange, request retention, streaming, file,
+  fine-tuning, batch, webhook, and model-equivalence behavior.
 
 ## Testing and Verification
 
@@ -80,6 +83,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
 - The scan did not identify production authentication, payment, or secret-management code. Treat future additions in those areas as security-sensitive.
 - Any future OpenAI-compatible proxy or SDK shim should define a compatibility
   contract and contract tests before claiming drop-in behavior.
+- Non-goals must stay explicit until an endpoint contract and tests replace
+  them with implemented behavior.
 - Compatibility layers can leak credentials, retain sensitive prompts, or mask
   upstream API errors when request forwarding, logging, and response translation
   are underspecified.
