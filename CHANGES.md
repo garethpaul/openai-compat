@@ -31,3 +31,8 @@
   gate commands run the same SDK-free sparse baseline as `make check`.
 - Added a Python bytecode guard so sparse verification catches leftover local
   `__pycache__` or `.pyc` output.
+
+## 2026-06-10
+
+- Added an environment-variable credential policy requirement before future
+  compatibility code reads API-key-like process state.

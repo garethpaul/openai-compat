@@ -12,9 +12,9 @@ shim, and it does not currently make any compatibility guarantee.
 Do not infer compatibility behavior from the repository name alone. Future
 implementation work needs a written compatibility contract, explicit non-goals,
 credential-handling rules, logging and payload-retention rules, error
-propagation behavior, rate limits and retries, versioning rules, documentation
-evidence, model mapping policy, and contract tests before any compatibility
-claim is made.
+propagation behavior, environment-variable credential policy, rate limits and
+retries, versioning rules, documentation evidence, model mapping policy, and
+contract tests before any compatibility claim is made.
 
 This README is based on the checked-in source, manifests, scripts, and repository metadata on the `main` branch. The project language mix found during review was: no dominant source language detected.
 
@@ -76,6 +76,9 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - Model mapping policy must define supported model identifiers, aliases,
   unsupported-model behavior, and silent fallback rules before runtime behavior
   is advertised.
+- Environment-variable credential policy must define accepted variables,
+  credential source precedence, automatic environment reads, redaction, and
+  isolated tests before runtime behavior reads API-key-like values.
 - The test fixture policy must define sanitized fixtures, fixture provenance,
   and default tests with no live API calls before behavior is implemented.
 - The contract includes non-goals for unsupported API or SDK compatibility,
@@ -121,6 +124,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
   hide or transform upstream throttling.
 - Model mapping policy must be explicit before future compatibility behavior
   accepts model identifiers or aliases.
+- Environment-variable credential policy must be explicit before future
+  compatibility behavior reads process environment credentials.
 - Test fixture policy must keep sanitized fixtures and no live API calls as the
   default for future contract tests.
 
@@ -133,6 +138,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
 - See `SECURITY.md` for vulnerability reporting and safe research guidance.
 - See `docs/compatibility-contract.md` for the required compatibility-contract
   template.
+- See `docs/plans/2026-06-10-environment-credential-policy.md` for the
+  environment-variable credential policy guardrail.
 - See `CHANGES.md` and `docs/plans/2026-06-08-openai-compat-baseline.md` for
   the current placeholder baseline.
 - See `VISION.md` for project direction and contribution guardrails.

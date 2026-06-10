@@ -45,6 +45,22 @@ Before implementation, define:
 - whether credentials are ever persisted
 - behavior for missing, malformed, revoked, or unauthorized credentials
 
+## Environment Variable Credential Policy
+
+No environment-variable credential behavior is implemented yet.
+
+Before implementation, define:
+
+- accepted API-key or token environment variables, if any
+- credential source precedence across headers, environment variables, local
+  config files, and explicit constructor arguments
+- whether process environment variables are read automatically or only through
+  an explicit opt-in path
+- redaction rules for missing, malformed, revoked, or unauthorized credentials
+  sourced from the environment
+- tests that clear and restore credential-like environment variables so local
+  developer state cannot affect contract results
+
 ## Request And Response Handling
 
 No request forwarding, request storage, response translation, or response

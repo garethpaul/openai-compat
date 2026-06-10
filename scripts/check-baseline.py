@@ -17,6 +17,7 @@ RATE_LIMIT_RETRY_PLAN = "docs/plans/2026-06-09-rate-limit-retry-contract.md"
 MODEL_MAPPING_PLAN = "docs/plans/2026-06-09-model-mapping-policy.md"
 MAKE_GATE_PLAN = "docs/plans/2026-06-09-make-gate-aliases.md"
 PYTHON_BYTECODE_PLAN = "docs/plans/2026-06-09-python-bytecode-guard.md"
+ENV_CREDENTIAL_PLAN = "docs/plans/2026-06-10-environment-credential-policy.md"
 REQUIRED = [
     ".gitignore",
     "CHANGES.md",
@@ -35,6 +36,7 @@ REQUIRED = [
     MODEL_MAPPING_PLAN,
     MAKE_GATE_PLAN,
     PYTHON_BYTECODE_PLAN,
+    ENV_CREDENTIAL_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -104,6 +106,8 @@ def main():
         "Do not infer compatibility",
         "no OpenAI proxy",
         "credential handling",
+        "environment-variable credential policy",
+        "credential source precedence",
         "request logging",
         "payload retention",
         "error propagation",
@@ -144,6 +148,11 @@ def main():
         "request or response retention",
         "streaming, file uploads, fine-tuning, batch jobs, or webhook behavior",
         "Authentication And Credential Handling",
+        "Environment Variable Credential Policy",
+        "No environment-variable credential behavior is implemented yet.",
+        "credential source precedence",
+        "whether process environment variables are read automatically",
+        "tests that clear and restore credential-like environment variables",
         "Error Mapping",
         "Rate Limits And Retries",
         "No rate-limit or retry behavior is implemented yet.",
@@ -196,6 +205,9 @@ def main():
     python_bytecode_plan = read(PYTHON_BYTECODE_PLAN)
     if "status: completed" not in python_bytecode_plan or "Python bytecode" not in python_bytecode_plan:
         failures.append("Python bytecode plan must record completed status and verification")
+    env_credential_plan = read(ENV_CREDENTIAL_PLAN)
+    if "status: completed" not in env_credential_plan or "Environment Variable Credential Policy" not in env_credential_plan:
+        failures.append("environment credential plan must record completed status and verification")
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")

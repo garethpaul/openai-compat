@@ -41,6 +41,8 @@ Priority:
 - Keep rate limits and retries explicit before request forwarding exists
 - Keep model mapping policy explicit before model identifiers or aliases are
   accepted
+- Keep environment-variable credential policy explicit before code reads
+  process environment credentials
 - Keep verification workspaces free of generated Python bytecode
 
 Next priorities:
@@ -57,6 +59,8 @@ Next priorities:
   forwarding requests
 - Define model mapping, aliasing, unsupported-model behavior, and silent
   fallback rules before accepting model identifiers
+- Define accepted credential variables, credential source precedence, and
+  environment isolation tests before reading process environment credentials
 - Convert non-goals into tested contracts only when implementation exists
 
 Contribution rules:
@@ -68,6 +72,8 @@ Contribution rules:
 - Keep examples free of secrets.
 - Document unsupported behavior explicitly.
 - Document rate limits and retries before adding proxy behavior.
+- Document environment-variable credential behavior before reading API-key-like
+  values from process state.
 - Preserve the Python bytecode guard when changing sparse verification.
 
 ## Security And Responsible Use
