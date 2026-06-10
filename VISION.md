@@ -44,6 +44,8 @@ Priority:
 - Keep environment-variable credential policy explicit before code reads
   process environment credentials
 - Keep verification workspaces free of generated Python bytecode
+- Keep the docs-only compatibility contract enforced in pinned, read-only
+  hosted Linux CI
 
 Next priorities:
 

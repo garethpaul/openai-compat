@@ -36,3 +36,5 @@
 
 - Added an environment-variable credential policy requirement before future
   compatibility code reads API-key-like process state.
+- Added pinned, read-only hosted Linux validation for the docs-only sparse
+  compatibility contract.
