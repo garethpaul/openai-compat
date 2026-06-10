@@ -43,6 +43,8 @@ Priority:
   accepted
 - Keep environment-variable credential policy explicit before code reads
   process environment credentials
+- Keep observability and data retention policy explicit before logging,
+  metrics, tracing, analytics, or request retention exists
 - Keep verification workspaces free of generated Python bytecode
 - Keep the docs-only compatibility contract enforced in pinned, read-only
   hosted Linux CI
@@ -63,6 +65,8 @@ Next priorities:
   fallback rules before accepting model identifiers
 - Define accepted credential variables, credential source precedence, and
   environment isolation tests before reading process environment credentials
+- Define permitted observability fields, explicit opt-in, sampling, retention
+  periods, and deletion behavior before telemetry exists
 - Convert non-goals into tested contracts only when implementation exists
 
 Contribution rules:
@@ -76,6 +80,7 @@ Contribution rules:
 - Document rate limits and retries before adding proxy behavior.
 - Document environment-variable credential behavior before reading API-key-like
   values from process state.
+- Document observability and retention behavior before adding telemetry.
 - Preserve the Python bytecode guard when changing sparse verification.
 
 ## Security And Responsible Use

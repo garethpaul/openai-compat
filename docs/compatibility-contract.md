@@ -88,6 +88,25 @@ Before implementation, define:
   when silent fallback is unsupported
 - official documentation evidence used to justify each supported model claim
 
+## Observability And Data Retention
+
+No logging, metrics, tracing, analytics, or data-retention behavior is
+implemented yet.
+
+Before implementation, define:
+
+- the exact fields permitted in logs, metrics, traces, and audit events
+- fields that must never contain credentials, prompts, messages, files,
+  embeddings, tool arguments, or response content
+- whether request identifiers are generated locally, accepted from callers, or
+  propagated upstream
+- whether debug logging and distributed tracing require explicit opt-in
+- metric and trace sampling rules, including behavior under failure or load
+- retention periods, storage locations, access controls, and deletion behavior
+- redaction behavior for validation errors, upstream errors, and retry logs
+- contract tests proving sensitive payload fragments and credentials never
+  appear in observability output
+
 ## Rate Limits And Retries
 
 No rate-limit or retry behavior is implemented yet.

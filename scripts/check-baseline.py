@@ -19,6 +19,7 @@ MAKE_GATE_PLAN = "docs/plans/2026-06-09-make-gate-aliases.md"
 PYTHON_BYTECODE_PLAN = "docs/plans/2026-06-09-python-bytecode-guard.md"
 ENV_CREDENTIAL_PLAN = "docs/plans/2026-06-10-environment-credential-policy.md"
 HOSTED_VALIDATION_PLAN = "docs/plans/2026-06-10-hosted-contract-validation.md"
+OBSERVABILITY_PLAN = "docs/plans/2026-06-10-observability-retention-policy.md"
 REQUIRED = [
     ".github/workflows/check.yml",
     ".gitignore",
@@ -40,6 +41,7 @@ REQUIRED = [
     PYTHON_BYTECODE_PLAN,
     ENV_CREDENTIAL_PLAN,
     HOSTED_VALIDATION_PLAN,
+    OBSERVABILITY_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -128,6 +130,9 @@ def main():
         "versioning",
         "Python bytecode",
         "hosted Linux",
+        "observability and data retention policy",
+        "explicit opt-in",
+        "retention periods",
     ]:
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
@@ -168,6 +173,11 @@ def main():
         "default-model behavior",
         "accepted model identifiers",
         "silent fallback",
+        "Observability And Data Retention",
+        "No logging, metrics, tracing, analytics, or data-retention behavior",
+        "distributed tracing require explicit opt-in",
+        "retention periods, storage locations, access controls, and deletion behavior",
+        "sensitive payload fragments and credentials never",
         "Versioning And Compatibility Claims",
         "Documentation Evidence",
         "date reviewed",
@@ -216,6 +226,9 @@ def main():
     workflow = read(".github/workflows/check.yml")
     if "status: completed" not in hosted_validation_plan or "make check" not in hosted_validation_plan:
         failures.append("hosted contract validation plan must record completed status and verification")
+    observability_plan = read(OBSERVABILITY_PLAN)
+    if "status: completed" not in observability_plan or "Observability And Data Retention" not in observability_plan:
+        failures.append("observability retention plan must record completed status and verification")
     for expected in [
         "permissions:\n  contents: read",
         "cancel-in-progress: true",

@@ -79,6 +79,9 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - Environment-variable credential policy must define accepted variables,
   credential source precedence, automatic environment reads, redaction, and
   isolated tests before runtime behavior reads API-key-like values.
+- Observability and data retention policy must define permitted fields,
+  explicit opt-in for debug tracing, sampling, retention periods, deletion
+  behavior, and tests that exclude sensitive payloads.
 - The test fixture policy must define sanitized fixtures, fixture provenance,
   and default tests with no live API calls before behavior is implemented.
 - The contract includes non-goals for unsupported API or SDK compatibility,

@@ -38,3 +38,5 @@
   compatibility code reads API-key-like process state.
 - Added pinned, read-only hosted Linux validation for the docs-only sparse
   compatibility contract.
+- Added an observability and data-retention policy requirement before future
+  logging, metrics, tracing, analytics, or payload retention behavior.
