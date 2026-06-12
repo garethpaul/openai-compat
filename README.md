@@ -73,6 +73,9 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
   fixture or contract test before an endpoint is advertised.
 - Rate limits and retries must define upstream 429 behavior, retry budgets,
   backoff, and idempotency-key handling before request forwarding exists.
+- Timeout and cancellation policy must define connect, response-header,
+  overall, and streaming idle budgets; one deadline across retries; client
+  disconnect propagation; cleanup; sanitized errors; and deterministic tests.
 - Model mapping policy must define supported model identifiers, aliases,
   unsupported-model behavior, and silent fallback rules before runtime behavior
   is advertised.

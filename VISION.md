@@ -39,6 +39,8 @@ Priority:
 - Keep documentation evidence explicit before endpoint behavior is advertised
 - Keep test fixture policy explicit before compatibility tests are added
 - Keep rate limits and retries explicit before request forwarding exists
+- Keep timeout, cancellation, client-disconnect propagation, and cleanup
+  explicit before network or streaming behavior exists
 - Keep model mapping policy explicit before model identifiers or aliases are
   accepted
 - Keep environment-variable credential policy explicit before code reads
@@ -61,6 +63,8 @@ Next priorities:
 - Define sanitized fixture provenance before implementation
 - Define rate-limit, retry, timeout, and idempotency-key behavior before
   forwarding requests
+- Define connect, response-header, overall, and streaming idle budgets plus
+  cancellation propagation and cleanup before network behavior exists
 - Define model mapping, aliasing, unsupported-model behavior, and silent
   fallback rules before accepting model identifiers
 - Define accepted credential variables, credential source precedence, and
@@ -78,6 +82,7 @@ Contribution rules:
 - Keep examples free of secrets.
 - Document unsupported behavior explicitly.
 - Document rate limits and retries before adding proxy behavior.
+- Document timeout and cancellation behavior before adding network calls.
 - Document environment-variable credential behavior before reading API-key-like
   values from process state.
 - Document observability and retention behavior before adding telemetry.

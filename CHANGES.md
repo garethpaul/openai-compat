@@ -1,5 +1,13 @@
 # Changes
 
+## 2026-06-12
+
+- Added a required timeout and cancellation policy covering phase-specific
+  deadlines, one overall retry budget, client disconnect propagation, cleanup,
+  sanitized errors, and deterministic offline tests.
+- Extended the sparse baseline to prevent the policy or completed plan from
+  being removed before runtime work begins.
+
 ## 2026-06-08
 
 - Added a sparse placeholder baseline for `openai-compat`.

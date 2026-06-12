@@ -74,6 +74,26 @@ Before implementation, define:
 - response normalization rules
 - behavior for partial upstream failures and retries
 
+## Timeout And Cancellation Policy
+
+No timeout, deadline, client-disconnect propagation, or cancellation behavior
+is implemented yet.
+
+Before implementation, define:
+
+- connect, response-header, overall request, and streaming idle timeout budgets
+  for every outbound network path
+- one overall deadline shared by the initial attempt and all retries, rather
+  than a fresh full timeout for each attempt
+- how caller cancellation and client disconnects propagate to upstream requests
+  and streaming producers
+- cleanup of response bodies, streams, tasks, sockets, and temporary resources
+  after timeout or cancellation
+- stable client-visible timeout and cancellation errors that do not expose
+  credentials, upstream response bodies, or internal transport details
+- deterministic tests using fake clocks, local stalled fixtures, or controlled
+  streams without live API calls
+
 ## Model Mapping Policy
 
 No model mapping, aliasing, fallback, or default-model behavior is implemented
@@ -182,6 +202,7 @@ No compatibility behavior may be added without tests that cover:
 - authentication failure behavior
 - upstream error mapping
 - timeout or retry behavior when implemented
+- client disconnect and cancellation propagation when implemented
 - redaction of credentials and sensitive payload fragments
 - fixture policy compliance for sanitized test data and no live API calls by
   default
