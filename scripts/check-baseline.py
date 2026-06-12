@@ -2,6 +2,7 @@
 """Static baseline checks for the sparse openai-compat repository."""
 
 from pathlib import Path
+import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -21,6 +22,7 @@ ENV_CREDENTIAL_PLAN = "docs/plans/2026-06-10-environment-credential-policy.md"
 HOSTED_VALIDATION_PLAN = "docs/plans/2026-06-10-hosted-contract-validation.md"
 OBSERVABILITY_PLAN = "docs/plans/2026-06-10-observability-retention-policy.md"
 TIMEOUT_CANCELLATION_PLAN = "docs/plans/2026-06-12-timeout-cancellation-policy.md"
+REQUEST_RESOURCE_LIMITS_PLAN = "docs/plans/2026-06-12-request-validation-resource-limits.md"
 REQUIRED = [
     ".github/workflows/check.yml",
     ".gitignore",
@@ -44,6 +46,7 @@ REQUIRED = [
     HOSTED_VALIDATION_PLAN,
     OBSERVABILITY_PLAN,
     TIMEOUT_CANCELLATION_PLAN,
+    REQUEST_RESOURCE_LIMITS_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -51,6 +54,14 @@ ALLOWED_TRACKED = set(REQUIRED)
 
 def read(path):
     return (ROOT / path).read_text(encoding="utf-8", errors="replace")
+
+
+def markdown_section(text, heading):
+    match = re.search(
+        rf"(?ms)^## {re.escape(heading)}\s*$\n(.*?)(?=^## |\Z)",
+        text,
+    )
+    return match.group(1).strip() if match else ""
 
 
 def tracked_files():
@@ -137,6 +148,8 @@ def main():
         "retention periods",
         "timeout and cancellation policy",
         "client disconnect propagation",
+        "request validation and resource limits",
+        "wire and decompressed",
     ]:
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
@@ -189,6 +202,17 @@ def main():
         "caller cancellation and client disconnects propagate",
         "cleanup of response bodies, streams, tasks, sockets, and temporary resources",
         "deterministic tests using fake clocks",
+        "Request Validation And Resource Limits",
+        "No request parsing, decompression, schema validation",
+        "accepted HTTP methods, media types, and character encodings",
+        "accepted content encodings",
+        "separate wire-byte and decompressed-byte limits",
+        "chunked requests and requests without a declared length",
+        "stops at the first exceeded limit",
+        "JSON nesting, object, array, string, and field-count limits",
+        "unknown fields, duplicate keys, malformed bodies",
+        "stable sanitized `400`, `413`, and `415` responses",
+        "decompression expansion, malformed encodings, and cleanup",
         "Versioning And Compatibility Claims",
         "Documentation Evidence",
         "date reviewed",
@@ -247,6 +271,36 @@ def main():
         or "make check" not in timeout_cancellation_plan
     ):
         failures.append("timeout cancellation plan must record completed status and verification")
+    request_resource_limits_plan = read(REQUEST_RESOURCE_LIMITS_PLAN)
+    resource_status = re.findall(r"(?mi)^status:\s*(.+?)\s*$", request_resource_limits_plan)
+    resource_work = markdown_section(request_resource_limits_plan, "Work Completed")
+    resource_verification = markdown_section(request_resource_limits_plan, "Verification Completed")
+    if resource_status != ["completed"] or not resource_work:
+        failures.append("request validation resource limits plan must record one completed status and completed work")
+    if not resource_verification or re.search(
+        r"(?i)\b(?:pending|todo|tbd|not run)\b", resource_verification
+    ):
+        failures.append("request validation resource limits plan must record completed verification")
+    for evidence in [
+        "python3 scripts/check-baseline.py",
+        "make lint",
+        "make test",
+        "make build",
+        "make check",
+        "git diff --check",
+        "python3 -m py_compile scripts/check-baseline.py",
+        "27398295097",
+        "27398298958",
+        "6878dc01891b9eaf45ebb4f0e866001e149d9b3c",
+        "wire-byte",
+        "decompressed-byte",
+        "incremental reads",
+        "JSON nesting",
+        "duplicate-key",
+        "`JSON nesting`, `duplicate-key`, and sanitized `400`, `413`, and `415`",
+    ]:
+        if evidence not in resource_verification:
+            failures.append(f"request validation resource-limit verification must record {evidence}")
     for expected in [
         "permissions:\n  contents: read",
         "cancel-in-progress: true",

@@ -7,6 +7,9 @@
   sanitized errors, and deterministic offline tests.
 - Extended the sparse baseline to prevent the policy or completed plan from
   being removed before runtime work begins.
+- Added a required request validation and resource-limits policy covering media
+  types, content encodings, wire and decompressed bounds, incremental reads,
+  structural JSON limits, sanitized errors, cleanup, and offline tests.
 
 ## 2026-06-08
 

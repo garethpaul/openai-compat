@@ -76,6 +76,9 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - Timeout and cancellation policy must define connect, response-header,
   overall, and streaming idle budgets; one deadline across retries; client
   disconnect propagation; cleanup; sanitized errors; and deterministic tests.
+- Request validation and resource limits policy must define accepted methods,
+  media and content encodings, wire and decompressed size bounds, incremental
+  reads, structural JSON limits, sanitized errors, and offline boundary tests.
 - Model mapping policy must define supported model identifiers, aliases,
   unsupported-model behavior, and silent fallback rules before runtime behavior
   is advertised.
@@ -130,6 +133,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
   official documentation and local contract tests.
 - Rate limits and retries must be explicit before future proxy behavior can
   hide or transform upstream throttling.
+- Request validation and resource limits must be explicit before a future
+  endpoint parses, decompresses, stores, or forwards attacker-controlled input.
 - Model mapping policy must be explicit before future compatibility behavior
   accepts model identifiers or aliases.
 - Environment-variable credential policy must be explicit before future
@@ -150,6 +155,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
   environment-variable credential policy guardrail.
 - See `docs/plans/2026-06-10-hosted-contract-validation.md` for the hosted
   Linux sparse contract gate.
+- See `docs/plans/2026-06-12-request-validation-resource-limits.md` for the
+  request validation and resource limits guardrail.
 - See `CHANGES.md` and `docs/plans/2026-06-08-openai-compat-baseline.md` for
   the current placeholder baseline.
 - See `VISION.md` for project direction and contribution guardrails.
