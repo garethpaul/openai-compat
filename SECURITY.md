@@ -71,8 +71,9 @@ and tests proving credentials and sensitive payload fragments remain absent.
 Run `make lint`, `make test`, `make build`, and `make check` before changing
 the sparse baseline. Generated Python bytecode is local tooling output and
 should not remain after verification.
-Pinned, read-only hosted Linux validation enforces the same docs-only sparse
-allowlist without API credentials, dependencies, or live OpenAI requests.
+Pinned, read-only hosted Linux validation uses a credential-free checkout and
+enforces the same docs-only sparse allowlist without persisted repository
+credentials, API credentials, dependencies, or live OpenAI requests.
 
 ## Safe Research Guidelines
 

@@ -50,8 +50,8 @@ Priority:
 - Keep observability and data retention policy explicit before logging,
   metrics, tracing, analytics, or request retention exists
 - Keep verification workspaces free of generated Python bytecode
-- Keep the docs-only compatibility contract enforced in pinned, read-only
-  hosted Linux CI
+- Keep the docs-only compatibility contract enforced in pinned, read-only,
+  credential-free hosted Linux CI
 
 Next priorities:
 

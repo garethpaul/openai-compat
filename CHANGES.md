@@ -2,6 +2,8 @@
 
 ## 2026-06-12
 
+- Disabled checkout credential persistence in the pinned, read-only hosted
+  validation job and added structural checks for that boundary.
 - Added a required timeout and cancellation policy covering phase-specific
   deadlines, one overall retry budget, client disconnect propagation, cleanup,
   sanitized errors, and deterministic offline tests.

@@ -102,8 +102,9 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - `make test`
 - `make build`
 - `make check`
-- Pinned, read-only hosted Linux validation runs the same docs-only sparse
-  contract gate on Python 3.12 for pushes and pull requests.
+- Pinned, read-only hosted Linux validation uses a credential-free checkout and
+  runs the same docs-only sparse contract gate on Python 3.12 for pushes and
+  pull requests.
 - `python3 scripts/check-baseline.py`
 
 When the required SDK or runtime is unavailable, use static checks and source review first, then verify on a machine that has the matching platform toolchain.
