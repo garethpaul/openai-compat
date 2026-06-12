@@ -1,5 +1,10 @@
 # openai-compat
 
+Repository verification requires Python 3.10 or newer, as declared in
+`pyproject.toml`. Hosted checks prove both Python 3.10 and 3.12. The private
+`0.0.0` metadata is marked `Private :: Do Not Upload`, describes only this
+documentation contract, and does not claim an implemented compatibility client.
+
 <!-- README-OVERVIEW-IMAGE -->
 ![Project overview](docs/readme-overview.svg)
 
@@ -42,7 +47,7 @@ Additional scan context:
 ### Prerequisites
 
 - Git
-- Python 3
+- Python 3.10 or newer
 
 ### Setup
 
@@ -99,6 +104,9 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - `make test`
 - `make build`
 - `make check`
+- GitHub Actions runs the same sparse gate on Python 3.10 and 3.12 with pinned
+  actions, read-only permissions, credential-free checkout, and no API keys or
+  live requests.
 - Pinned, read-only hosted Linux validation runs the same docs-only sparse
   contract gate on Python 3.12 for pushes and pull requests.
 - `python3 scripts/check-baseline.py`

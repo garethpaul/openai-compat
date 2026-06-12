@@ -28,9 +28,10 @@ Files:
 - `VISION.md`
 - `CHANGES.md`
 
-Add a commit-pinned, read-only Python 3.12 workflow on `ubuntu-24.04` that runs
-`make check`. Extend the sparse allowlist and checker so the workflow and this
-plan are required tracked surfaces with an enforced configuration.
+Add a commit-pinned, read-only Python 3.10/3.12 matrix on `ubuntu-24.04` that
+runs `make check` with credential persistence disabled. Extend the sparse
+allowlist and checker so the workflow and this plan are required tracked
+surfaces with an enforced configuration.
 
 ## Verification
 

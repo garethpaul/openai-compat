@@ -87,6 +87,8 @@ Contribution rules:
   values from process state.
 - Document observability and retention behavior before adding telemetry.
 - Preserve the Python bytecode guard when changing sparse verification.
+- Keep the private `0.0.0` metadata non-publishable and verify the Python 3.10
+  floor alongside Python 3.12 in hosted checks.
 
 ## Security And Responsible Use
 

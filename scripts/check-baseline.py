@@ -8,6 +8,42 @@ import xml.etree.ElementTree as ET
 
 
 ROOT = Path(__file__).resolve().parents[1]
+EXPECTED_WORKFLOW = """name: Check
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  baseline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Validate compatibility contract
+        run: make check
+"""
 PLAN = "docs/plans/2026-06-08-openai-compat-baseline.md"
 NON_GOALS_PLAN = "docs/plans/2026-06-09-compat-non-goals.md"
 VERSIONING_PLAN = "docs/plans/2026-06-09-compat-versioning-claims.md"
@@ -18,12 +54,14 @@ MODEL_MAPPING_PLAN = "docs/plans/2026-06-09-model-mapping-policy.md"
 MAKE_GATE_PLAN = "docs/plans/2026-06-09-make-gate-aliases.md"
 PYTHON_BYTECODE_PLAN = "docs/plans/2026-06-09-python-bytecode-guard.md"
 ENV_CREDENTIAL_PLAN = "docs/plans/2026-06-10-environment-credential-policy.md"
+PYTHON_METADATA_PLAN = "docs/plans/2026-06-10-python-runtime-metadata.md"
 HOSTED_VALIDATION_PLAN = "docs/plans/2026-06-10-hosted-contract-validation.md"
 OBSERVABILITY_PLAN = "docs/plans/2026-06-10-observability-retention-policy.md"
 TIMEOUT_CANCELLATION_PLAN = "docs/plans/2026-06-12-timeout-cancellation-policy.md"
 REQUIRED = [
     ".github/workflows/check.yml",
     ".gitignore",
+    "AGENTS.md",
     "CHANGES.md",
     "Makefile",
     "README.md",
@@ -41,12 +79,21 @@ REQUIRED = [
     MAKE_GATE_PLAN,
     PYTHON_BYTECODE_PLAN,
     ENV_CREDENTIAL_PLAN,
+    PYTHON_METADATA_PLAN,
+    "pyproject.toml",
     HOSTED_VALIDATION_PLAN,
     OBSERVABILITY_PLAN,
     TIMEOUT_CANCELLATION_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
+EXPECTED_PYPROJECT = """[project]
+name = "openai-compat-contract"
+version = "0.0.0"
+description = "Documentation-only OpenAI compatibility contract"
+requires-python = ">=3.10"
+classifiers = ["Private :: Do Not Upload"]
+"""
 
 
 def read(path):
@@ -66,6 +113,8 @@ def tracked_files():
 
 def main():
     failures = []
+    if sys.version_info < (3, 10):
+        failures.append("repository verification requires Python 3.10 or newer")
     for path in REQUIRED:
         if not (ROOT / path).is_file():
             failures.append(f"required file missing: {path}")
@@ -87,6 +136,8 @@ def main():
         failures.append("generated Python bytecode must not remain after gates: " + ", ".join(bytecode_paths[:5]))
 
     makefile = read("Makefile")
+    if read("pyproject.toml") != EXPECTED_PYPROJECT:
+        failures.append("pyproject.toml must exactly declare the private documentation-only Python 3.10+ baseline")
     for phrase in [
         ".PHONY: build check lint static-check test verify",
         "check: verify",
@@ -233,6 +284,9 @@ def main():
     env_credential_plan = read(ENV_CREDENTIAL_PLAN)
     if "status: completed" not in env_credential_plan or "Environment Variable Credential Policy" not in env_credential_plan:
         failures.append("environment credential plan must record completed status and verification")
+    python_metadata_plan = read(PYTHON_METADATA_PLAN)
+    if "status: completed" not in python_metadata_plan or "requires-python" not in python_metadata_plan:
+        failures.append("Python runtime metadata plan must record completed status and verification")
     hosted_validation_plan = read(HOSTED_VALIDATION_PLAN)
     workflow = read(".github/workflows/check.yml")
     if "status: completed" not in hosted_validation_plan or "make check" not in hosted_validation_plan:
@@ -247,18 +301,8 @@ def main():
         or "make check" not in timeout_cancellation_plan
     ):
         failures.append("timeout cancellation plan must record completed status and verification")
-    for expected in [
-        "permissions:\n  contents: read",
-        "cancel-in-progress: true",
-        "runs-on: ubuntu-24.04",
-        "timeout-minutes: 10",
-        "actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10",
-        "actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405",
-        'python-version: "3.12"',
-        "run: make check",
-    ]:
-        if expected not in workflow:
-            failures.append(f"Check workflow must keep {expected}")
+    if workflow != EXPECTED_WORKFLOW:
+        failures.append("Check workflow must exactly preserve the pinned, credential-free sparse validation contract")
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")
