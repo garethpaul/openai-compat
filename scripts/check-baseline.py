@@ -21,6 +21,7 @@ ENV_CREDENTIAL_PLAN = "docs/plans/2026-06-10-environment-credential-policy.md"
 HOSTED_VALIDATION_PLAN = "docs/plans/2026-06-10-hosted-contract-validation.md"
 OBSERVABILITY_PLAN = "docs/plans/2026-06-10-observability-retention-policy.md"
 TIMEOUT_CANCELLATION_PLAN = "docs/plans/2026-06-12-timeout-cancellation-policy.md"
+REQUEST_RESOURCE_LIMITS_PLAN = "docs/plans/2026-06-12-request-validation-resource-limits.md"
 REQUIRED = [
     ".github/workflows/check.yml",
     ".gitignore",
@@ -44,6 +45,7 @@ REQUIRED = [
     HOSTED_VALIDATION_PLAN,
     OBSERVABILITY_PLAN,
     TIMEOUT_CANCELLATION_PLAN,
+    REQUEST_RESOURCE_LIMITS_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -137,6 +139,8 @@ def main():
         "retention periods",
         "timeout and cancellation policy",
         "client disconnect propagation",
+        "request validation and resource limits",
+        "wire and decompressed",
     ]:
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
@@ -189,6 +193,17 @@ def main():
         "caller cancellation and client disconnects propagate",
         "cleanup of response bodies, streams, tasks, sockets, and temporary resources",
         "deterministic tests using fake clocks",
+        "Request Validation And Resource Limits",
+        "No request parsing, decompression, schema validation",
+        "accepted HTTP methods, media types, and character encodings",
+        "accepted content encodings",
+        "separate wire-byte and decompressed-byte limits",
+        "chunked requests and requests without a declared length",
+        "stops at the first exceeded limit",
+        "JSON nesting, object, array, string, and field-count limits",
+        "unknown fields, duplicate keys, malformed bodies",
+        "stable sanitized `400`, `413`, and `415` responses",
+        "decompression expansion, malformed encodings, and cleanup",
         "Versioning And Compatibility Claims",
         "Documentation Evidence",
         "date reviewed",
@@ -247,6 +262,13 @@ def main():
         or "make check" not in timeout_cancellation_plan
     ):
         failures.append("timeout cancellation plan must record completed status and verification")
+    request_resource_limits_plan = read(REQUEST_RESOURCE_LIMITS_PLAN)
+    if (
+        "status: completed" not in request_resource_limits_plan
+        or "Request Validation And Resource Limits" not in request_resource_limits_plan
+        or "make check" not in request_resource_limits_plan
+    ):
+        failures.append("request validation resource limits plan must record completed status and verification")
     for expected in [
         "permissions:\n  contents: read",
         "cancel-in-progress: true",

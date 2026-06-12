@@ -74,6 +74,28 @@ Before implementation, define:
 - response normalization rules
 - behavior for partial upstream failures and retries
 
+## Request Validation And Resource Limits
+
+No request parsing, decompression, schema validation, or resource-limit
+behavior is implemented yet.
+
+Before implementation, define for every endpoint:
+
+- accepted HTTP methods, media types, and character encodings
+- accepted content encodings
+- separate wire-byte and decompressed-byte limits, including behavior for
+  chunked requests and requests without a declared length
+- incremental read behavior that stops at the first exceeded limit and cleans
+  up partially read bodies, streams, and temporary files
+- JSON nesting, object, array, string, and field-count limits where structured
+  input is accepted
+- behavior for unknown fields, duplicate keys, malformed bodies, unsupported
+  encodings, and schema mismatches before upstream forwarding
+- stable sanitized `400`, `413`, and `415` responses that do not echo
+  credentials, prompts, messages, files, tool arguments, or raw body fragments
+- deterministic offline tests for exact boundaries, chunked overruns,
+  decompression expansion, malformed encodings, and cleanup
+
 ## Timeout And Cancellation Policy
 
 No timeout, deadline, client-disconnect propagation, or cancellation behavior
