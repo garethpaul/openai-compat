@@ -1,5 +1,10 @@
 # Changes
 
+## 2026-06-10
+
+- Added Python 3.10+ PEP 621 runtime metadata for the documentation-only
+  compatibility contract.
+
 ## 2026-06-08
 
 - Added a sparse placeholder baseline for `openai-compat`.

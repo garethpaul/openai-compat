@@ -4,6 +4,7 @@
 from pathlib import Path
 import subprocess
 import sys
+import tomllib
 import xml.etree.ElementTree as ET
 
 
@@ -18,6 +19,7 @@ MODEL_MAPPING_PLAN = "docs/plans/2026-06-09-model-mapping-policy.md"
 MAKE_GATE_PLAN = "docs/plans/2026-06-09-make-gate-aliases.md"
 PYTHON_BYTECODE_PLAN = "docs/plans/2026-06-09-python-bytecode-guard.md"
 ENV_CREDENTIAL_PLAN = "docs/plans/2026-06-10-environment-credential-policy.md"
+PYTHON_METADATA_PLAN = "docs/plans/2026-06-10-python-runtime-metadata.md"
 REQUIRED = [
     ".gitignore",
     "CHANGES.md",
@@ -37,6 +39,8 @@ REQUIRED = [
     MAKE_GATE_PLAN,
     PYTHON_BYTECODE_PLAN,
     ENV_CREDENTIAL_PLAN,
+    PYTHON_METADATA_PLAN,
+    "pyproject.toml",
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -80,6 +84,10 @@ def main():
         failures.append("generated Python bytecode must not remain after gates: " + ", ".join(bytecode_paths[:5]))
 
     makefile = read("Makefile")
+    with (ROOT / "pyproject.toml").open("rb") as file:
+        project = tomllib.load(file).get("project", {})
+    if project.get("requires-python") != ">=3.10" or project.get("version") != "0.0.0":
+        failures.append("pyproject.toml must declare the documentation-only Python 3.10+ baseline")
     for phrase in [
         ".PHONY: build check lint static-check test verify",
         "check: verify",
@@ -208,6 +216,9 @@ def main():
     env_credential_plan = read(ENV_CREDENTIAL_PLAN)
     if "status: completed" not in env_credential_plan or "Environment Variable Credential Policy" not in env_credential_plan:
         failures.append("environment credential plan must record completed status and verification")
+    python_metadata_plan = read(PYTHON_METADATA_PLAN)
+    if "status: completed" not in python_metadata_plan or "requires-python" not in python_metadata_plan:
+        failures.append("Python runtime metadata plan must record completed status and verification")
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")

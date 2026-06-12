@@ -1,5 +1,9 @@
 # openai-compat
 
+Repository verification requires Python 3.10 or newer, as declared in
+`pyproject.toml`. The `0.0.0` package metadata describes this documentation-only
+contract and does not claim that an OpenAI compatibility client is implemented.
+
 <!-- README-OVERVIEW-IMAGE -->
 ![Project overview](docs/readme-overview.svg)
 
