@@ -52,7 +52,15 @@ not echo private request content.
   policies.
 - Do not add dependencies.
 
-## Verification
+## Work Completed
+
+- Defined endpoint-specific method, media-type, encoding, and schema policy.
+- Required separate wire-byte and decompressed-byte limits.
+- Required incremental stop-at-limit reads with cleanup.
+- Defined structural JSON limits and sanitized `400`, `413`, and `415`
+  responses without adding a runtime implementation.
+
+## Verification Completed
 
 - `python3 scripts/check-baseline.py` passed on 2026-06-12.
 - `make lint` passed on 2026-06-12.
@@ -63,3 +71,10 @@ not echo private request content.
   incremental stop-at-limit behavior, and the stable `413` contract on
   2026-06-12.
 - `git diff --check` passed on 2026-06-12.
+- `python3 -m py_compile scripts/check-baseline.py` passed.
+- Canonical push run `27398295097` and pull-request run `27398298958`
+  completed successfully at exact head
+  `6878dc01891b9eaf45ebb4f0e866001e149d9b3c`.
+- The policy preserves `wire-byte`, `decompressed-byte`, `incremental reads`,
+  `JSON nesting`, `duplicate-key`, and sanitized `400`, `413`, and `415`
+  requirements.

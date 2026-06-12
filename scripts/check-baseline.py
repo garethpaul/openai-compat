@@ -2,6 +2,7 @@
 """Static baseline checks for the sparse openai-compat repository."""
 
 from pathlib import Path
+import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -53,6 +54,14 @@ ALLOWED_TRACKED = set(REQUIRED)
 
 def read(path):
     return (ROOT / path).read_text(encoding="utf-8", errors="replace")
+
+
+def markdown_section(text, heading):
+    match = re.search(
+        rf"(?ms)^## {re.escape(heading)}\s*$\n(.*?)(?=^## |\Z)",
+        text,
+    )
+    return match.group(1).strip() if match else ""
 
 
 def tracked_files():
@@ -263,12 +272,35 @@ def main():
     ):
         failures.append("timeout cancellation plan must record completed status and verification")
     request_resource_limits_plan = read(REQUEST_RESOURCE_LIMITS_PLAN)
-    if (
-        "status: completed" not in request_resource_limits_plan
-        or "Request Validation And Resource Limits" not in request_resource_limits_plan
-        or "make check" not in request_resource_limits_plan
+    resource_status = re.findall(r"(?mi)^status:\s*(.+?)\s*$", request_resource_limits_plan)
+    resource_work = markdown_section(request_resource_limits_plan, "Work Completed")
+    resource_verification = markdown_section(request_resource_limits_plan, "Verification Completed")
+    if resource_status != ["completed"] or not resource_work:
+        failures.append("request validation resource limits plan must record one completed status and completed work")
+    if not resource_verification or re.search(
+        r"(?i)\b(?:pending|todo|tbd|not run)\b", resource_verification
     ):
-        failures.append("request validation resource limits plan must record completed status and verification")
+        failures.append("request validation resource limits plan must record completed verification")
+    for evidence in [
+        "python3 scripts/check-baseline.py",
+        "make lint",
+        "make test",
+        "make build",
+        "make check",
+        "git diff --check",
+        "python3 -m py_compile scripts/check-baseline.py",
+        "27398295097",
+        "27398298958",
+        "6878dc01891b9eaf45ebb4f0e866001e149d9b3c",
+        "wire-byte",
+        "decompressed-byte",
+        "incremental reads",
+        "JSON nesting",
+        "duplicate-key",
+        "`JSON nesting`, `duplicate-key`, and sanitized `400`, `413`, and `415`",
+    ]:
+        if evidence not in resource_verification:
+            failures.append(f"request validation resource-limit verification must record {evidence}")
     for expected in [
         "permissions:\n  contents: read",
         "cancel-in-progress: true",
