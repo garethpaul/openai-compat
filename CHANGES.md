@@ -1,9 +1,24 @@
 # Changes
 
+## 2026-06-12
+
+- Added a required timeout and cancellation policy covering phase-specific
+  deadlines, one overall retry budget, client disconnect propagation, cleanup,
+  sanitized errors, and deterministic offline tests.
+- Extended the sparse baseline to prevent the policy or completed plan from
+  being removed before runtime work begins.
+
 ## 2026-06-10
 
 - Added Python 3.10+ PEP 621 runtime metadata for the documentation-only
+  compatibility contract without claiming an implemented client, marked it
+  `Private :: Do Not Upload`, and added hosted Python 3.10/3.12 verification.
+- Added an environment-variable credential policy requirement before future
+  compatibility code reads API-key-like process state.
+- Added pinned, read-only hosted Linux validation for the docs-only sparse
   compatibility contract.
+- Added an observability and data-retention policy requirement before future
+  logging, metrics, tracing, analytics, or payload retention behavior.
 
 ## 2026-06-08
 
@@ -36,8 +51,3 @@
   gate commands run the same SDK-free sparse baseline as `make check`.
 - Added a Python bytecode guard so sparse verification catches leftover local
   `__pycache__` or `.pyc` output.
-
-## 2026-06-10
-
-- Added an environment-variable credential policy requirement before future
-  compatibility code reads API-key-like process state.

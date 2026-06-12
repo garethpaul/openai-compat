@@ -15,6 +15,7 @@
 - Install dependencies: no repository-specific install command is documented.
 - Full baseline: `make check`
 - Combined verification: `make verify`
+- Minimum runtime: Python 3.10; hosted validation covers Python 3.10 and 3.12.
 - If a command above skips because a platform toolchain is missing, verify on a machine with that SDK before claiming platform behavior is tested.
 
 ## Coding conventions

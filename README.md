@@ -1,8 +1,9 @@
 # openai-compat
 
 Repository verification requires Python 3.10 or newer, as declared in
-`pyproject.toml`. The `0.0.0` package metadata describes this documentation-only
-contract and does not claim that an OpenAI compatibility client is implemented.
+`pyproject.toml`. Hosted checks prove both Python 3.10 and 3.12. The private
+`0.0.0` metadata is marked `Private :: Do Not Upload`, describes only this
+documentation contract, and does not claim an implemented compatibility client.
 
 <!-- README-OVERVIEW-IMAGE -->
 ![Project overview](docs/readme-overview.svg)
@@ -46,7 +47,7 @@ Additional scan context:
 ### Prerequisites
 
 - Git
-- Python 3
+- Python 3.10 or newer
 
 ### Setup
 
@@ -77,12 +78,18 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
   fixture or contract test before an endpoint is advertised.
 - Rate limits and retries must define upstream 429 behavior, retry budgets,
   backoff, and idempotency-key handling before request forwarding exists.
+- Timeout and cancellation policy must define connect, response-header,
+  overall, and streaming idle budgets; one deadline across retries; client
+  disconnect propagation; cleanup; sanitized errors; and deterministic tests.
 - Model mapping policy must define supported model identifiers, aliases,
   unsupported-model behavior, and silent fallback rules before runtime behavior
   is advertised.
 - Environment-variable credential policy must define accepted variables,
   credential source precedence, automatic environment reads, redaction, and
   isolated tests before runtime behavior reads API-key-like values.
+- Observability and data retention policy must define permitted fields,
+  explicit opt-in for debug tracing, sampling, retention periods, deletion
+  behavior, and tests that exclude sensitive payloads.
 - The test fixture policy must define sanitized fixtures, fixture provenance,
   and default tests with no live API calls before behavior is implemented.
 - The contract includes non-goals for unsupported API or SDK compatibility,
@@ -97,6 +104,11 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - `make test`
 - `make build`
 - `make check`
+- GitHub Actions runs the same sparse gate on Python 3.10 and 3.12 with pinned
+  actions, read-only permissions, credential-free checkout, and no API keys or
+  live requests.
+- Pinned, read-only hosted Linux validation runs the same docs-only sparse
+  contract gate on Python 3.12 for pushes and pull requests.
 - `python3 scripts/check-baseline.py`
 
 When the required SDK or runtime is unavailable, use static checks and source review first, then verify on a machine that has the matching platform toolchain.
@@ -144,6 +156,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
   template.
 - See `docs/plans/2026-06-10-environment-credential-policy.md` for the
   environment-variable credential policy guardrail.
+- See `docs/plans/2026-06-10-hosted-contract-validation.md` for the hosted
+  Linux sparse contract gate.
 - See `CHANGES.md` and `docs/plans/2026-06-08-openai-compat-baseline.md` for
   the current placeholder baseline.
 - See `VISION.md` for project direction and contribution guardrails.

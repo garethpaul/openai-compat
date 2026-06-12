@@ -74,6 +74,26 @@ Before implementation, define:
 - response normalization rules
 - behavior for partial upstream failures and retries
 
+## Timeout And Cancellation Policy
+
+No timeout, deadline, client-disconnect propagation, or cancellation behavior
+is implemented yet.
+
+Before implementation, define:
+
+- connect, response-header, overall request, and streaming idle timeout budgets
+  for every outbound network path
+- one overall deadline shared by the initial attempt and all retries, rather
+  than a fresh full timeout for each attempt
+- how caller cancellation and client disconnects propagate to upstream requests
+  and streaming producers
+- cleanup of response bodies, streams, tasks, sockets, and temporary resources
+  after timeout or cancellation
+- stable client-visible timeout and cancellation errors that do not expose
+  credentials, upstream response bodies, or internal transport details
+- deterministic tests using fake clocks, local stalled fixtures, or controlled
+  streams without live API calls
+
 ## Model Mapping Policy
 
 No model mapping, aliasing, fallback, or default-model behavior is implemented
@@ -87,6 +107,25 @@ Before implementation, define:
 - whether model names ever fall back silently, and tests that prove they do not
   when silent fallback is unsupported
 - official documentation evidence used to justify each supported model claim
+
+## Observability And Data Retention
+
+No logging, metrics, tracing, analytics, or data-retention behavior is
+implemented yet.
+
+Before implementation, define:
+
+- the exact fields permitted in logs, metrics, traces, and audit events
+- fields that must never contain credentials, prompts, messages, files,
+  embeddings, tool arguments, or response content
+- whether request identifiers are generated locally, accepted from callers, or
+  propagated upstream
+- whether debug logging and distributed tracing require explicit opt-in
+- metric and trace sampling rules, including behavior under failure or load
+- retention periods, storage locations, access controls, and deletion behavior
+- redaction behavior for validation errors, upstream errors, and retry logs
+- contract tests proving sensitive payload fragments and credentials never
+  appear in observability output
 
 ## Rate Limits And Retries
 
@@ -163,6 +202,7 @@ No compatibility behavior may be added without tests that cover:
 - authentication failure behavior
 - upstream error mapping
 - timeout or retry behavior when implemented
+- client disconnect and cancellation propagation when implemented
 - redaction of credentials and sensitive payload fragments
 - fixture policy compliance for sanitized test data and no live API calls by
   default
