@@ -1,6 +1,6 @@
 # Request Validation And Resource Limits
 
-status: planned
+status: completed
 
 ## Context
 
@@ -54,9 +54,12 @@ not echo private request content.
 
 ## Verification
 
-- `python3 scripts/check-baseline.py`
-- `make lint`
-- `make test`
-- `make build`
-- `make check`
-- `git diff --check`
+- `python3 scripts/check-baseline.py` passed on 2026-06-12.
+- `make lint` passed on 2026-06-12.
+- `make test` passed on 2026-06-12.
+- `make build` passed on 2026-06-12.
+- `make check` passed on 2026-06-12.
+- `make check` rejected mutations removing separate decompressed limits,
+  incremental stop-at-limit behavior, and the stable `413` contract on
+  2026-06-12.
+- `git diff --check` passed on 2026-06-12.

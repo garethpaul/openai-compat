@@ -61,6 +61,10 @@ exists.
 Timeout and cancellation policy should define phase-specific deadlines, one
 overall budget across retries, client disconnect propagation, resource cleanup,
 sanitized errors, and deterministic tests before network behavior exists.
+Request validation and resource limits policy should define accepted media and
+content encodings, separate wire and decompressed bounds, incremental reads,
+structural JSON limits, stable sanitized errors, and offline boundary tests
+before request parsing or forwarding exists.
 Observability and data retention policy should define permitted event fields,
 explicit opt-in for tracing, sampling, retention periods, deletion behavior,
 and tests proving credentials and sensitive payload fragments remain absent.
