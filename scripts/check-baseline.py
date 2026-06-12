@@ -23,6 +23,7 @@ HOSTED_VALIDATION_PLAN = "docs/plans/2026-06-10-hosted-contract-validation.md"
 OBSERVABILITY_PLAN = "docs/plans/2026-06-10-observability-retention-policy.md"
 TIMEOUT_CANCELLATION_PLAN = "docs/plans/2026-06-12-timeout-cancellation-policy.md"
 REQUEST_RESOURCE_LIMITS_PLAN = "docs/plans/2026-06-12-request-validation-resource-limits.md"
+CHECKOUT_CREDENTIAL_PLAN = "docs/plans/2026-06-12-checkout-credential-boundary.md"
 REQUIRED = [
     ".github/workflows/check.yml",
     ".gitignore",
@@ -47,6 +48,7 @@ REQUIRED = [
     OBSERVABILITY_PLAN,
     TIMEOUT_CANCELLATION_PLAN,
     REQUEST_RESOURCE_LIMITS_PLAN,
+    CHECKOUT_CREDENTIAL_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -259,6 +261,10 @@ def main():
         failures.append("environment credential plan must record completed status and verification")
     hosted_validation_plan = read(HOSTED_VALIDATION_PLAN)
     workflow = read(".github/workflows/check.yml")
+    workflow_files = [
+        *sorted((ROOT / ".github/workflows").glob("*.yml")),
+        *sorted((ROOT / ".github/workflows").glob("*.yaml")),
+    ]
     if "status: completed" not in hosted_validation_plan or "make check" not in hosted_validation_plan:
         failures.append("hosted contract validation plan must record completed status and verification")
     observability_plan = read(OBSERVABILITY_PLAN)
@@ -313,6 +319,49 @@ def main():
     ]:
         if expected not in workflow:
             failures.append(f"Check workflow must keep {expected}")
+
+    checkout_action = (
+        "actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10"
+    )
+    checkout_blocks = re.findall(
+        rf"(?m)^(?P<indent> *)- +uses: +{re.escape(checkout_action)}[^\n]*\n"
+        rf"(?P=indent)  with:\n"
+        rf"(?P=indent)    persist-credentials: +false *$",
+        workflow,
+    )
+    checkout_actions = re.findall(
+        r"(?m)^\s*-\s+uses:\s+actions/checkout@",
+        workflow,
+    )
+    if not (
+        len(workflow_files) == 1
+        and workflow.count("permissions:") == 1
+        and workflow.count("contents: read") == 1
+        and not re.search(r"(?m)^\s*[A-Za-z-]+:\s*write\s*$", workflow)
+        and len(checkout_actions) == 1
+        and workflow.count(checkout_action) == 1
+        and len(checkout_blocks) == 1
+        and workflow.count("persist-credentials: false") == 1
+        and "persist-credentials: true" not in workflow
+    ):
+        failures.append(
+            "Check workflow must keep one read-only permission block and one "
+            "pinned, credential-free checkout"
+        )
+
+    checkout_plan = read(CHECKOUT_CREDENTIAL_PLAN)
+    checkout_status = re.findall(r"(?mi)^status:\s*(.+?)\s*$", checkout_plan)
+    checkout_work = markdown_section(checkout_plan, "Work Completed")
+    checkout_verification = markdown_section(checkout_plan, "Verification Completed")
+    if not (
+        checkout_status == ["completed"]
+        and checkout_work
+        and "make check" in checkout_verification
+    ):
+        failures.append(
+            "checkout credential plan must record one completed status, "
+            "completed work, and make check verification"
+        )
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")
