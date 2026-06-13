@@ -2,6 +2,8 @@
 
 ## 2026-06-13
 
+- Made every standard Make gate resolve the sparse checker from the repository
+  root, including absolute-Makefile invocations from external directories.
 - Added a required authentication and error boundary covering ambiguous or
   duplicate credential inputs, separate authentication failure classes,
   header policy, stable error provenance and codes, redaction, correlation,

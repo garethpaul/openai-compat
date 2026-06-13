@@ -25,6 +25,7 @@ TIMEOUT_CANCELLATION_PLAN = "docs/plans/2026-06-12-timeout-cancellation-policy.m
 REQUEST_RESOURCE_LIMITS_PLAN = "docs/plans/2026-06-12-request-validation-resource-limits.md"
 CHECKOUT_CREDENTIAL_PLAN = "docs/plans/2026-06-12-checkout-credential-boundary.md"
 AUTH_ERROR_PLAN = "docs/plans/2026-06-13-authentication-error-boundary.md"
+LOCATION_INDEPENDENT_MAKE_PLAN = "docs/plans/2026-06-13-location-independent-make-gates.md"
 REQUIRED = [
     ".github/workflows/check.yml",
     ".gitignore",
@@ -51,6 +52,7 @@ REQUIRED = [
     REQUEST_RESOURCE_LIMITS_PLAN,
     CHECKOUT_CREDENTIAL_PLAN,
     AUTH_ERROR_PLAN,
+    LOCATION_INDEPENDENT_MAKE_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -107,7 +109,8 @@ def main():
         "check: verify",
         "verify: static-check",
         "lint test build: static-check",
-        "PYTHONDONTWRITEBYTECODE=1 $(PYTHON) scripts/check-baseline.py",
+        "override REPO_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))",
+        'PYTHONDONTWRITEBYTECODE=1 $(PYTHON) "$(REPO_ROOT)/scripts/check-baseline.py"',
     ]:
         if phrase not in makefile:
             failures.append(f"Makefile must include standard gate alias: {phrase}")
@@ -154,11 +157,18 @@ def main():
         "client disconnect propagation",
         "request validation and resource limits",
         "wire and decompressed",
+        "absolute path from another directory",
     ]:
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
     changes = read("CHANGES.md")
-    for phrase in ["make lint", "make test", "make build", "make check"]:
+    for phrase in [
+        "make lint",
+        "make test",
+        "make build",
+        "make check",
+        "absolute-Makefile invocations from external directories",
+    ]:
         if phrase not in changes:
             failures.append(f"CHANGES must mention {phrase}")
 
@@ -405,6 +415,45 @@ def main():
         if evidence not in auth_error_verification:
             failures.append(
                 f"authentication error boundary verification must record {evidence}"
+            )
+
+    location_independent_make_plan = read(LOCATION_INDEPENDENT_MAKE_PLAN)
+    location_make_status = re.findall(
+        r"(?mi)^status:\s*(.+?)\s*$", location_independent_make_plan
+    )
+    location_make_work = markdown_section(
+        location_independent_make_plan, "Work Completed"
+    )
+    location_make_verification = markdown_section(
+        location_independent_make_plan, "Verification Completed"
+    )
+    if location_make_status != ["completed"] or not location_make_work:
+        failures.append(
+            "location-independent Make plan must record one completed status "
+            "and completed work"
+        )
+    if not location_make_verification or re.search(
+        r"(?i)\b(?:pending|todo|tbd|not run)\b", location_make_verification
+    ):
+        failures.append(
+            "location-independent Make plan must record completed verification"
+        )
+    for evidence in [
+        "make lint",
+        "make test",
+        "make build",
+        "make verify",
+        "make check",
+        "from `/tmp`",
+        "absolute",
+        "caller-supplied `REPO_ROOT` override",
+        "python3 -m py_compile scripts/check-baseline.py",
+        "workflow YAML parsed successfully",
+        "Ten isolated hostile mutations were rejected",
+    ]:
+        if evidence not in location_make_verification:
+            failures.append(
+                f"location-independent Make verification must record {evidence}"
             )
 
     try:
