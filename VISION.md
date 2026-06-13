@@ -47,6 +47,8 @@ Priority:
   accepted
 - Keep environment-variable credential policy explicit before code reads
   process environment credentials
+- Keep authentication ambiguity, failure classes, challenge headers, error
+  provenance, and sanitized error schemas explicit before runtime code exists
 - Keep observability and data retention policy explicit before logging,
   metrics, tracing, analytics, or request retention exists
 - Keep verification workspaces free of generated Python bytecode

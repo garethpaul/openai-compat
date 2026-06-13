@@ -39,11 +39,19 @@ No credential handling is implemented yet.
 
 Before implementation, define:
 
-- accepted credential sources, such as headers or local environment variables
+- accepted credential locations, such as headers or local environment
+  variables, and explicitly prohibit credentials in URLs or query strings
+- precedence between credential sources and rejection behavior for duplicate,
+  conflicting, or otherwise ambiguous authorization inputs
 - whether credentials are passed through, transformed, or exchanged
 - redaction rules for logs, errors, fixtures, and test output
 - whether credentials are ever persisted
-- behavior for missing, malformed, revoked, or unauthorized credentials
+- separate behavior for missing, malformed, expired, revoked, unauthorized, or
+  insufficient-scope credentials
+- whether authentication challenge headers are generated, translated, passed
+  through, or omitted
+- deterministic offline tests for duplicate credentials, malformed schemes,
+  redaction, and stable authentication failures
 
 ## Environment Variable Credential Policy
 
@@ -172,7 +180,18 @@ Before implementation, define:
 - errors translated into compatibility-layer responses
 - HTTP status codes or SDK exceptions used for each class of failure
 - retryable versus non-retryable failures
-- redaction behavior for error bodies
+- stable machine-readable error codes and schemas for client validation,
+  compatibility policy, upstream authentication, upstream rate limiting,
+  timeout, cancellation, and internal failures
+- whether authentication challenge, retry, and request-correlation headers are
+  generated, translated, passed through, or omitted
+- redaction behavior that prevents credentials, raw authorization values,
+  prompts, files, tool arguments, upstream response bodies, stack traces, and
+  internal transport details from entering client-visible errors or test output
+- request-correlation behavior that cannot confuse identifiers with
+  authentication credentials
+- deterministic offline tests for error provenance, stable status and code
+  mapping, sanitized bodies and headers, and redaction
 
 ## Versioning And Compatibility Claims
 

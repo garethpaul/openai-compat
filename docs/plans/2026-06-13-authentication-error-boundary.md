@@ -1,6 +1,6 @@
 # Authentication And Error Boundary
 
-status: planned
+status: completed
 
 ## Context
 
@@ -61,3 +61,20 @@ or upstream error-body boundaries before implementation begins.
 - run focused hostile mutations against the authentication/error contract
 - `git diff --check`
 - scan the intended diff for secrets and generated artifacts
+
+## Work Completed
+
+Expanded the docs-only contract with endpoint-specific authentication input,
+failure-class, header, redaction, error provenance, stable code, and request
+correlation requirements without adding runtime behavior or dependencies.
+
+## Verification Completed
+
+- `python3 scripts/check-baseline.py`, `make lint`, `make test`, `make build`,
+  and `make check` passed.
+- The checker passed from an external working directory, and workflow YAML
+  parsed successfully.
+- Ten focused hostile mutations rejected weakened authentication, error, and
+  completed-plan requirements.
+- `git diff --check` and the intended-diff secret and generated-artifact scan
+  passed.
