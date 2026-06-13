@@ -24,6 +24,7 @@ OBSERVABILITY_PLAN = "docs/plans/2026-06-10-observability-retention-policy.md"
 TIMEOUT_CANCELLATION_PLAN = "docs/plans/2026-06-12-timeout-cancellation-policy.md"
 REQUEST_RESOURCE_LIMITS_PLAN = "docs/plans/2026-06-12-request-validation-resource-limits.md"
 CHECKOUT_CREDENTIAL_PLAN = "docs/plans/2026-06-12-checkout-credential-boundary.md"
+AUTH_ERROR_PLAN = "docs/plans/2026-06-13-authentication-error-boundary.md"
 REQUIRED = [
     ".github/workflows/check.yml",
     ".gitignore",
@@ -49,6 +50,7 @@ REQUIRED = [
     TIMEOUT_CANCELLATION_PLAN,
     REQUEST_RESOURCE_LIMITS_PLAN,
     CHECKOUT_CREDENTIAL_PLAN,
+    AUTH_ERROR_PLAN,
     "scripts/check-baseline.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -176,12 +178,22 @@ def main():
         "request or response retention",
         "streaming, file uploads, fine-tuning, batch jobs, or webhook behavior",
         "Authentication And Credential Handling",
+        "credentials in URLs or query strings",
+        "otherwise ambiguous authorization inputs",
+        "insufficient-scope credentials",
+        "authentication challenge headers",
         "Environment Variable Credential Policy",
         "No environment-variable credential behavior is implemented yet.",
         "credential source precedence",
         "whether process environment variables are read automatically",
         "tests that clear and restore credential-like environment variables",
         "Error Mapping",
+        "stable machine-readable error codes and schemas",
+        "upstream authentication, upstream rate limiting",
+        "raw authorization values",
+        "upstream response bodies, stack traces",
+        "request-correlation behavior",
+        "deterministic offline tests for error provenance",
         "Rate Limits And Retries",
         "No rate-limit or retry behavior is implemented yet.",
         "upstream 429 responses",
@@ -362,6 +374,38 @@ def main():
             "checkout credential plan must record one completed status, "
             "completed work, and make check verification"
         )
+
+    auth_error_plan = read(AUTH_ERROR_PLAN)
+    auth_error_status = re.findall(r"(?mi)^status:\s*(.+?)\s*$", auth_error_plan)
+    auth_error_work = markdown_section(auth_error_plan, "Work Completed")
+    auth_error_verification = markdown_section(auth_error_plan, "Verification Completed")
+    if auth_error_status != ["completed"] or not auth_error_work:
+        failures.append(
+            "authentication error boundary plan must record one completed status "
+            "and completed work"
+        )
+    if not auth_error_verification or re.search(
+        r"(?i)\b(?:pending|todo|tbd|not run)\b", auth_error_verification
+    ):
+        failures.append(
+            "authentication error boundary plan must record completed verification"
+        )
+    for evidence in [
+        "python3 scripts/check-baseline.py",
+        "make lint",
+        "make test",
+        "make build",
+        "make check",
+        "external working directory",
+        "hostile mutations rejected",
+        "workflow YAML",
+        "git diff --check",
+        "secret and generated-artifact scan",
+    ]:
+        if evidence not in auth_error_verification:
+            failures.append(
+                f"authentication error boundary verification must record {evidence}"
+            )
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")

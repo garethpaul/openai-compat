@@ -58,6 +58,11 @@ fixture policy should require sanitized fixtures, fixture provenance, and no
 live API calls by default. Retry behavior should define upstream 429 handling,
 backoff, retry budgets, and idempotency-key handling before request forwarding
 exists.
+Authentication and error policy should reject duplicate or ambiguous
+credential inputs, keep credentials out of URLs, distinguish missing,
+malformed, expired, revoked, unauthorized, and insufficient-scope failures,
+and define stable sanitized body, header, code, provenance, and correlation
+behavior before runtime code exists.
 Timeout and cancellation policy should define phase-specific deadlines, one
 overall budget across retries, client disconnect propagation, resource cleanup,
 sanitized errors, and deterministic tests before network behavior exists.

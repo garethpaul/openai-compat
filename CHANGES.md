@@ -1,5 +1,12 @@
 # Changes
 
+## 2026-06-13
+
+- Added a required authentication and error boundary covering ambiguous or
+  duplicate credential inputs, separate authentication failure classes,
+  header policy, stable error provenance and codes, redaction, correlation,
+  and deterministic offline fixtures.
+
 ## 2026-06-12
 
 - Disabled checkout credential persistence in the pinned, read-only hosted

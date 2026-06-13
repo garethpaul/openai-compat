@@ -85,6 +85,10 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - Environment-variable credential policy must define accepted variables,
   credential source precedence, automatic environment reads, redaction, and
   isolated tests before runtime behavior reads API-key-like values.
+- Authentication and error policy must reject duplicate or ambiguous
+  authorization inputs, keep credentials out of URLs, define separate
+  credential failure classes, and specify stable sanitized error codes,
+  headers, provenance, and request-correlation behavior before runtime exists.
 - Observability and data retention policy must define permitted fields,
   explicit opt-in for debug tracing, sampling, retention periods, deletion
   behavior, and tests that exclude sensitive payloads.
