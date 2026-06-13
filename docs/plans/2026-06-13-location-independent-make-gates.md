@@ -1,6 +1,6 @@
 # Location-Independent Make Gates
 
-status: planned
+status: completed
 
 ## Context
 
@@ -46,3 +46,25 @@ to invoke the repository's Makefile without first changing directories.
   rooted Make and completed-plan contracts.
 - Audit the intended diff for whitespace errors, generated artifacts, and
   secret-like material.
+
+## Work Completed
+
+The Makefile now derives an absolute repository root from its own location and
+uses that root to invoke the dependency-free sparse checker. The static checker
+requires the rooted recipe, preserves the tracked-file boundary, and requires
+this completed plan and its verification evidence. README and change history
+now describe the external-working-directory behavior.
+
+## Verification Completed
+
+- `make lint`, `make test`, `make build`, `make verify`, and `make check` passed
+  from the repository root.
+- Every standard alias passed from `/tmp` through the repository's absolute
+  Makefile path.
+- External `make check` also passed with a caller-supplied `REPO_ROOT` override,
+  confirming that command-line variables cannot redirect checker resolution.
+- `python3 -m py_compile scripts/check-baseline.py` passed with bytecode routed
+  outside the repository, and the pinned workflow YAML parsed successfully.
+- Ten isolated hostile mutations were rejected across root derivation,
+  command-line override resistance, rooted checker invocation, completion
+  status and evidence, documentation, and the sparse tracked-file allowlist.
