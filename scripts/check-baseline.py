@@ -23,7 +23,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  baseline:
+  baseline_matrix:
+    name: baseline (${{ matrix.python-version }})
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     strategy:
@@ -43,6 +44,22 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Validate compatibility contract
         run: make check
+
+  baseline:
+    name: baseline
+    if: ${{ always() }}
+    needs: baseline_matrix
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Verify every baseline matrix result succeeded
+        env:
+          MATRIX_RESULT: ${{ needs.baseline_matrix.result }}
+        run: |
+          if [ "$MATRIX_RESULT" != "success" ]; then
+            echo "::error::baseline matrix result was $MATRIX_RESULT"
+            exit 1
+          fi
 """
 PLAN = "docs/plans/2026-06-08-openai-compat-baseline.md"
 NON_GOALS_PLAN = "docs/plans/2026-06-09-compat-non-goals.md"
@@ -302,7 +319,9 @@ def main():
     ):
         failures.append("timeout cancellation plan must record completed status and verification")
     if workflow != EXPECTED_WORKFLOW:
-        failures.append("Check workflow must exactly preserve the pinned, credential-free sparse validation contract")
+        failures.append(
+            "Check workflow must preserve the Python matrix and emit a fail-closed exact baseline aggregation check"
+        )
 
     try:
         ET.parse(ROOT / "docs/readme-overview.svg")
