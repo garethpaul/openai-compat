@@ -58,17 +58,27 @@ fixture policy should require sanitized fixtures, fixture provenance, and no
 live API calls by default. Retry behavior should define upstream 429 handling,
 backoff, retry budgets, and idempotency-key handling before request forwarding
 exists.
+Authentication and error policy should reject duplicate or ambiguous
+credential inputs, keep credentials out of URLs, distinguish missing,
+malformed, expired, revoked, unauthorized, and insufficient-scope failures,
+and define stable sanitized body, header, code, provenance, and correlation
+behavior before runtime code exists.
 Timeout and cancellation policy should define phase-specific deadlines, one
 overall budget across retries, client disconnect propagation, resource cleanup,
 sanitized errors, and deterministic tests before network behavior exists.
+Request validation and resource limits policy should define accepted media and
+content encodings, separate wire and decompressed bounds, incremental reads,
+structural JSON limits, stable sanitized errors, and offline boundary tests
+before request parsing or forwarding exists.
 Observability and data retention policy should define permitted event fields,
 explicit opt-in for tracing, sampling, retention periods, deletion behavior,
 and tests proving credentials and sensitive payload fragments remain absent.
 Run `make lint`, `make test`, `make build`, and `make check` before changing
 the sparse baseline. Generated Python bytecode is local tooling output and
 should not remain after verification.
-Pinned, read-only hosted Linux validation enforces the same docs-only sparse
-allowlist without API credentials, dependencies, or live OpenAI requests.
+Pinned, read-only hosted Linux validation uses a credential-free checkout and
+enforces the same docs-only sparse allowlist without persisted repository
+credentials, API credentials, dependencies, or live OpenAI requests.
 
 ## Safe Research Guidelines
 

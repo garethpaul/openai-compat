@@ -1,5 +1,10 @@
 # openai-compat
 
+Repository verification requires Python 3.10 or newer, as declared in
+`pyproject.toml`. Hosted checks prove both Python 3.10 and 3.12. The private
+`0.0.0` metadata is marked `Private :: Do Not Upload`, describes only this
+documentation contract, and does not claim an implemented compatibility client.
+
 <!-- README-OVERVIEW-IMAGE -->
 ![Project overview](docs/readme-overview.svg)
 
@@ -35,14 +40,15 @@ Additional scan context:
 - Source directories: no top-level source directories detected
 - Dependency and build manifests: none detected
 - Entry points or build surfaces: none detected
-- Test-looking files: no obvious test files detected
+- Test files: `tests/test_repository_policy.py` exercises the sparse boundary
+  with isolated hostile repository mutations and no network or API calls.
 
 ## Getting Started
 
 ### Prerequisites
 
 - Git
-- Python 3
+- Python 3.10 or newer
 
 ### Setup
 
@@ -76,12 +82,19 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - Timeout and cancellation policy must define connect, response-header,
   overall, and streaming idle budgets; one deadline across retries; client
   disconnect propagation; cleanup; sanitized errors; and deterministic tests.
+- Request validation and resource limits policy must define accepted methods,
+  media and content encodings, wire and decompressed size bounds, incremental
+  reads, structural JSON limits, sanitized errors, and offline boundary tests.
 - Model mapping policy must define supported model identifiers, aliases,
   unsupported-model behavior, and silent fallback rules before runtime behavior
   is advertised.
 - Environment-variable credential policy must define accepted variables,
   credential source precedence, automatic environment reads, redaction, and
   isolated tests before runtime behavior reads API-key-like values.
+- Authentication and error policy must reject duplicate or ambiguous
+  authorization inputs, keep credentials out of URLs, define separate
+  credential failure classes, and specify stable sanitized error codes,
+  headers, provenance, and request-correlation behavior before runtime exists.
 - Observability and data retention policy must define permitted fields,
   explicit opt-in for debug tracing, sampling, retention periods, deletion
   behavior, and tests that exclude sensitive payloads.
@@ -99,8 +112,9 @@ The setup commands above are derived from repository files. Legacy mobile, Pytho
 - `make test`
 - `make build`
 - `make check`
-- Pinned, read-only hosted Linux validation runs the same docs-only sparse
-  contract gate on Python 3.12 for pushes and pull requests.
+- GitHub Actions runs the same sparse gate on Python 3.10 and 3.12 with pinned
+  actions, read-only permissions, credential-free checkout, and no API keys or
+  live requests.
 - `python3 scripts/check-baseline.py`
 
 When the required SDK or runtime is unavailable, use static checks and source review first, then verify on a machine that has the matching platform toolchain.
@@ -130,6 +144,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
   official documentation and local contract tests.
 - Rate limits and retries must be explicit before future proxy behavior can
   hide or transform upstream throttling.
+- Request validation and resource limits must be explicit before a future
+  endpoint parses, decompresses, stores, or forwards attacker-controlled input.
 - Model mapping policy must be explicit before future compatibility behavior
   accepts model identifiers or aliases.
 - Environment-variable credential policy must be explicit before future
@@ -141,6 +157,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
 
 - Run `make lint`, `make test`, `make build`, and `make check` before changing
   the sparse baseline or adding tracked implementation files.
+- The standard Make aliases resolve repository paths from `Makefile`, so they
+  also work when the file is invoked by absolute path from another directory.
 - See `docs/plans/2026-06-09-make-gate-aliases.md` for the local verification
   gate aliases.
 - See `SECURITY.md` for vulnerability reporting and safe research guidance.
@@ -150,6 +168,8 @@ When the required SDK or runtime is unavailable, use static checks and source re
   environment-variable credential policy guardrail.
 - See `docs/plans/2026-06-10-hosted-contract-validation.md` for the hosted
   Linux sparse contract gate.
+- See `docs/plans/2026-06-12-request-validation-resource-limits.md` for the
+  request validation and resource limits guardrail.
 - See `CHANGES.md` and `docs/plans/2026-06-08-openai-compat-baseline.md` for
   the current placeholder baseline.
 - See `VISION.md` for project direction and contribution guardrails.

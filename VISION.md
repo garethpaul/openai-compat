@@ -41,15 +41,19 @@ Priority:
 - Keep rate limits and retries explicit before request forwarding exists
 - Keep timeout, cancellation, client-disconnect propagation, and cleanup
   explicit before network or streaming behavior exists
+- Keep request validation and resource limits explicit before parsing,
+  decompressing, storing, or forwarding attacker-controlled input
 - Keep model mapping policy explicit before model identifiers or aliases are
   accepted
 - Keep environment-variable credential policy explicit before code reads
   process environment credentials
+- Keep authentication ambiguity, failure classes, challenge headers, error
+  provenance, and sanitized error schemas explicit before runtime code exists
 - Keep observability and data retention policy explicit before logging,
   metrics, tracing, analytics, or request retention exists
 - Keep verification workspaces free of generated Python bytecode
-- Keep the docs-only compatibility contract enforced in pinned, read-only
-  hosted Linux CI
+- Keep the docs-only compatibility contract enforced in pinned, read-only,
+  credential-free hosted Linux CI
 
 Next priorities:
 
@@ -65,6 +69,9 @@ Next priorities:
   forwarding requests
 - Define connect, response-header, overall, and streaming idle budgets plus
   cancellation propagation and cleanup before network behavior exists
+- Define methods, media and content encodings, wire and decompressed size
+  bounds, structural limits, and sanitized rejection behavior before parsing
+  request bodies
 - Define model mapping, aliasing, unsupported-model behavior, and silent
   fallback rules before accepting model identifiers
 - Define accepted credential variables, credential source precedence, and
@@ -83,10 +90,14 @@ Contribution rules:
 - Document unsupported behavior explicitly.
 - Document rate limits and retries before adding proxy behavior.
 - Document timeout and cancellation behavior before adding network calls.
+- Document request validation and resource limits before accepting request
+  bodies.
 - Document environment-variable credential behavior before reading API-key-like
   values from process state.
 - Document observability and retention behavior before adding telemetry.
 - Preserve the Python bytecode guard when changing sparse verification.
+- Keep the private `0.0.0` metadata non-publishable and verify the Python 3.10
+  floor alongside Python 3.12 in hosted checks.
 
 ## Security And Responsible Use
 
