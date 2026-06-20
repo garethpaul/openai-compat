@@ -1,0 +1,80 @@
+# Request Validation And Resource Limits
+
+status: completed
+
+## Context
+
+The compatibility contract requires request validation and payload size limits,
+but it does not define which resource dimensions a future proxy must bound.
+Checking only `Content-Length` or a raw compressed body can still allow chunked
+overruns, decompression bombs, deeply nested JSON, oversized strings or arrays,
+and unsupported media types to consume memory or parser time before forwarding.
+
+## Priority
+
+An OpenAI-compatible boundary would accept attacker-controlled structured and
+potentially streamed input. Validation must fail before upstream forwarding,
+credential use, persistence, or expensive parsing, with stable errors that do
+not echo private request content.
+
+## Prioritized Engineering Backlog
+
+1. Require endpoint-specific request validation and resource limits before
+   runtime work.
+2. Add incremental parser and decompression fixtures with the first transport.
+3. Add bounded metrics for rejection reason and observed size without recording
+   request bodies or sensitive field values.
+
+## Requirements
+
+- R1. Define accepted HTTP methods, media types, character encodings, and
+  content encodings for every endpoint.
+- R2. Define separate wire-byte and decompressed-byte limits, including
+  chunked or missing-length requests.
+- R3. Require incremental reads that stop as soon as a limit is exceeded and
+  clean up partially read bodies or temporary files.
+- R4. Define JSON nesting, object, array, string, and field-count limits where
+  structured input is accepted.
+- R5. Define unknown-field, duplicate-key, malformed-body, and schema-mismatch
+  behavior before forwarding.
+- R6. Define stable sanitized `400`, `413`, and `415` responses that never echo
+  credentials, prompts, files, tool arguments, or raw body fragments.
+- R7. Require deterministic offline tests for exact boundaries, chunked
+  overruns, decompression expansion, malformed encodings, and cleanup.
+- R8. Enforce the policy language through the docs-only sparse baseline.
+
+## Scope Boundaries
+
+- Do not add a runtime, HTTP parser, decompressor, proxy, adapter, or SDK shim.
+- Do not choose numeric limits before an endpoint, transport, and workload are
+  defined.
+- Do not change the existing timeout, retry, credential, or observability
+  policies.
+- Do not add dependencies.
+
+## Work Completed
+
+- Defined endpoint-specific method, media-type, encoding, and schema policy.
+- Required separate wire-byte and decompressed-byte limits.
+- Required incremental stop-at-limit reads with cleanup.
+- Defined structural JSON limits and sanitized `400`, `413`, and `415`
+  responses without adding a runtime implementation.
+
+## Verification Completed
+
+- `python3 scripts/check-baseline.py` passed on 2026-06-12.
+- `make lint` passed on 2026-06-12.
+- `make test` passed on 2026-06-12.
+- `make build` passed on 2026-06-12.
+- `make check` passed on 2026-06-12.
+- `make check` rejected mutations removing separate decompressed limits,
+  incremental stop-at-limit behavior, and the stable `413` contract on
+  2026-06-12.
+- `git diff --check` passed on 2026-06-12.
+- `python3 -m py_compile scripts/check-baseline.py` passed.
+- Canonical push run `27398295097` and pull-request run `27398298958`
+  completed successfully at exact head
+  `6878dc01891b9eaf45ebb4f0e866001e149d9b3c`.
+- The policy preserves `wire-byte`, `decompressed-byte`, `incremental reads`,
+  `JSON nesting`, `duplicate-key`, and sanitized `400`, `413`, and `415`
+  requirements.

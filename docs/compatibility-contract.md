@@ -13,10 +13,14 @@ No endpoints are supported yet.
 
 Before implementation, define each endpoint with:
 
+- exact `/v1/...` path, accepted HTTP method, and request media type
 - upstream endpoint or SDK method being emulated
 - supported request fields and intentionally unsupported fields
 - response fields returned unchanged, translated, or omitted
 - streaming behavior, including chunk shape and termination behavior
+- for OpenAI-compatible SSE, `data:` framing, JSON chunk schema, blank-line
+  boundaries, error behavior before and after headers, and terminal
+  `data: [DONE]` semantics
 - timeout, retry, and rate-limit behavior
 - compatibility tests that prove the behavior
 
@@ -39,11 +43,19 @@ No credential handling is implemented yet.
 
 Before implementation, define:
 
-- accepted credential sources, such as headers or local environment variables
+- accepted credential locations, such as headers or local environment
+  variables, and explicitly prohibit credentials in URLs or query strings
+- precedence between credential sources and rejection behavior for duplicate,
+  conflicting, or otherwise ambiguous authorization inputs
 - whether credentials are passed through, transformed, or exchanged
 - redaction rules for logs, errors, fixtures, and test output
 - whether credentials are ever persisted
-- behavior for missing, malformed, revoked, or unauthorized credentials
+- separate behavior for missing, malformed, expired, revoked, unauthorized, or
+  insufficient-scope credentials
+- whether authentication challenge headers are generated, translated, passed
+  through, or omitted
+- deterministic offline tests for duplicate credentials, malformed schemes,
+  redaction, and stable authentication failures
 
 ## Environment Variable Credential Policy
 
@@ -73,6 +85,28 @@ Before implementation, define:
 - whether prompts, messages, files, or metadata are stored
 - response normalization rules
 - behavior for partial upstream failures and retries
+
+## Request Validation And Resource Limits
+
+No request parsing, decompression, schema validation, or resource-limit
+behavior is implemented yet.
+
+Before implementation, define for every endpoint:
+
+- accepted HTTP methods, media types, and character encodings
+- accepted content encodings
+- separate wire-byte and decompressed-byte limits, including behavior for
+  chunked requests and requests without a declared length
+- incremental read behavior that stops at the first exceeded limit and cleans
+  up partially read bodies, streams, and temporary files
+- JSON nesting, object, array, string, and field-count limits where structured
+  input is accepted
+- behavior for unknown fields, duplicate keys, malformed bodies, unsupported
+  encodings, and schema mismatches before upstream forwarding
+- stable sanitized `400`, `413`, and `415` responses that do not echo
+  credentials, prompts, messages, files, tool arguments, or raw body fragments
+- deterministic offline tests for exact boundaries, chunked overruns,
+  decompression expansion, malformed encodings, and cleanup
 
 ## Timeout And Cancellation Policy
 
@@ -150,7 +184,21 @@ Before implementation, define:
 - errors translated into compatibility-layer responses
 - HTTP status codes or SDK exceptions used for each class of failure
 - retryable versus non-retryable failures
-- redaction behavior for error bodies
+- stable machine-readable error codes and schemas for client validation,
+  compatibility policy, upstream authentication, upstream rate limiting,
+  timeout, cancellation, and internal failures
+- whether JSON errors use an OpenAI-compatible top-level `error` object with
+  `error.message`, `error.type`, `error.param`, and `error.code`, including
+  which fields may be null and which status codes map to each error class
+- whether authentication challenge, retry, and request-correlation headers are
+  generated, translated, passed through, or omitted
+- redaction behavior that prevents credentials, raw authorization values,
+  prompts, files, tool arguments, upstream response bodies, stack traces, and
+  internal transport details from entering client-visible errors or test output
+- request-correlation behavior that cannot confuse identifiers with
+  authentication credentials
+- deterministic offline tests for error provenance, stable status and code
+  mapping, sanitized bodies and headers, and redaction
 
 ## Versioning And Compatibility Claims
 
