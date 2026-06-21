@@ -1,5 +1,12 @@
 # Changes
 
+## 2026-06-21
+
+- Made absolute Makefile verification safe for spaces and apostrophes,
+  ignored caller-provided `REPO_ROOT` values, and rejected command-line or
+  environment `MAKEFILE_LIST` injection before sparse contract checks run.
+- Added root-policy regressions for every public Make target.
+
 - Deep-reviewed and consolidated the sparse compatibility contract: added
   hostile repository-policy tests, required exact OpenAI-compatible route,
   error-envelope, and SSE termination definitions before implementation, and
