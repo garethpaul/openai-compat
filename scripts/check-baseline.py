@@ -81,6 +81,7 @@ REQUEST_RESOURCE_LIMITS_PLAN = "docs/plans/2026-06-12-request-validation-resourc
 CHECKOUT_CREDENTIAL_PLAN = "docs/plans/2026-06-12-checkout-credential-boundary.md"
 AUTH_ERROR_PLAN = "docs/plans/2026-06-13-authentication-error-boundary.md"
 LOCATION_INDEPENDENT_MAKE_PLAN = "docs/plans/2026-06-13-location-independent-make-gates.md"
+SAFE_MAKE_ROOT_PLAN = "docs/plans/2026-06-21-safe-make-root.md"
 MAX_TRACKED_FILE_BYTES = 512 * 1024
 IMPLEMENTATION_SUFFIXES = {
     ".c", ".cc", ".cpp", ".cs", ".go", ".java", ".js", ".jsx", ".kt",
@@ -117,8 +118,10 @@ REQUIRED = [
     CHECKOUT_CREDENTIAL_PLAN,
     AUTH_ERROR_PLAN,
     LOCATION_INDEPENDENT_MAKE_PLAN,
+    SAFE_MAKE_ROOT_PLAN,
     "scripts/check-baseline.py",
     "tests/__init__.py",
+    "tests/test_makefile_root.py",
     "tests/test_repository_policy.py",
 ]
 ALLOWED_TRACKED = set(REQUIRED)
@@ -210,12 +213,15 @@ def main():
     if read("pyproject.toml") != EXPECTED_PYPROJECT:
         failures.append("pyproject.toml must exactly declare the private documentation-only Python 3.10+ baseline")
     for phrase in [
-        ".PHONY: build check lint static-check test verify",
+        "ifneq ($(origin MAKEFILE_LIST),file)",
+        "$(error MAKEFILE_LIST must not be overridden)",
+        "override REPO_ROOT := $(shell path=",
+        ".PHONY: build check lint root-test static-check test verify",
         "check: verify",
-        "verify: static-check",
+        "verify: static-check root-test",
         "lint test build: static-check",
-        "override REPO_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))",
         'PYTHONDONTWRITEBYTECODE=1 $(PYTHON) "$(REPO_ROOT)/scripts/check-baseline.py"',
+        "$(PYTHON) -m unittest -v tests.test_makefile_root",
     ]:
         if phrase not in makefile:
             failures.append(f"Makefile must include standard gate alias: {phrase}")

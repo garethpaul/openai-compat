@@ -158,7 +158,9 @@ When the required SDK or runtime is unavailable, use static checks and source re
 - Run `make lint`, `make test`, `make build`, and `make check` before changing
   the sparse baseline or adding tracked implementation files.
 - The standard Make aliases resolve repository paths from `Makefile`, so they
-  also work when the file is invoked by absolute path from another directory.
+  also work when the file is invoked by absolute path from another directory,
+  including paths containing spaces or apostrophes. Caller `REPO_ROOT` values are ignored,
+  and `MAKEFILE_LIST` overrides fail closed before verification runs.
 - See `docs/plans/2026-06-09-make-gate-aliases.md` for the local verification
   gate aliases.
 - See `SECURITY.md` for vulnerability reporting and safe research guidance.
