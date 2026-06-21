@@ -216,11 +216,14 @@ def main():
         "ifneq ($(origin MAKEFILE_LIST),file)",
         "$(error MAKEFILE_LIST must not be overridden)",
         "override REPO_ROOT := $(shell path=",
+        "export REPO_ROOT",
         ".PHONY: build check lint root-test static-check test verify",
         "check: verify",
         "verify: static-check root-test",
         "lint test build: static-check",
-        'PYTHONDONTWRITEBYTECODE=1 $(PYTHON) "$(REPO_ROOT)/scripts/check-baseline.py"',
+        'PYTHONDONTWRITEBYTECODE=1 $(PYTHON) "$$REPO_ROOT/scripts/check-baseline.py"',
+        'cd "$$REPO_ROOT" && PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_repository_policy',
+        'cd "$$REPO_ROOT" && PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_makefile_root',
         "$(PYTHON) -m unittest -v tests.test_makefile_root",
     ]:
         if phrase not in makefile:
