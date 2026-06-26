@@ -112,6 +112,21 @@ class RepositoryPolicyTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Python matrix", result.stderr)
 
+    def test_rejects_removed_make_invocation_authority(self):
+        def mutate(repository):
+            makefile = repository / "Makefile"
+            makefile.write_text(
+                makefile.read_text(encoding="utf-8").replace(
+                    "$(error MAKEFILES must be empty; repository verification requires this Makefile to be loaded alone)",
+                    "$(warning additional Makefiles are allowed)",
+                ),
+                encoding="utf-8",
+            )
+
+        result = self.run_checker(mutate)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Makefile must include invocation authority", result.stderr)
+
     def test_rejects_missing_openai_route_contract(self):
         def mutate(repository):
             contract = repository / "docs" / "compatibility-contract.md"

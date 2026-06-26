@@ -161,8 +161,13 @@ When the required SDK or runtime is unavailable, use static checks and source re
   also work when the file is invoked by absolute path from another directory,
   including paths containing spaces or apostrophes. Caller `REPO_ROOT` values are ignored,
   and `MAKEFILE_LIST` overrides fail closed before verification runs.
+- Repository verification requires this Makefile alone. Additional `-f` files,
+  preloaded Makefiles, caller `MAKEFLAGS`, and non-executing or error-ignoring
+  modes fail closed before any policy command runs.
 - See `docs/plans/2026-06-09-make-gate-aliases.md` for the local verification
   gate aliases.
+- See `docs/plans/2026-06-26-make-invocation-authority.md` for the Make
+  invocation ownership boundary and its hostile regressions.
 - See `SECURITY.md` for vulnerability reporting and safe research guidance.
 - See `docs/compatibility-contract.md` for the required compatibility-contract
   template.

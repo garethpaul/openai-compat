@@ -82,6 +82,7 @@ CHECKOUT_CREDENTIAL_PLAN = "docs/plans/2026-06-12-checkout-credential-boundary.m
 AUTH_ERROR_PLAN = "docs/plans/2026-06-13-authentication-error-boundary.md"
 LOCATION_INDEPENDENT_MAKE_PLAN = "docs/plans/2026-06-13-location-independent-make-gates.md"
 SAFE_MAKE_ROOT_PLAN = "docs/plans/2026-06-21-safe-make-root.md"
+MAKE_AUTHORITY_PLAN = "docs/plans/2026-06-26-make-invocation-authority.md"
 MAX_TRACKED_FILE_BYTES = 512 * 1024
 IMPLEMENTATION_SUFFIXES = {
     ".c", ".cc", ".cpp", ".cs", ".go", ".java", ".js", ".jsx", ".kt",
@@ -119,6 +120,7 @@ REQUIRED = [
     AUTH_ERROR_PLAN,
     LOCATION_INDEPENDENT_MAKE_PLAN,
     SAFE_MAKE_ROOT_PLAN,
+    MAKE_AUTHORITY_PLAN,
     "scripts/check-baseline.py",
     "tests/__init__.py",
     "tests/test_makefile_root.py",
@@ -213,21 +215,31 @@ def main():
     if read("pyproject.toml") != EXPECTED_PYPROJECT:
         failures.append("pyproject.toml must exactly declare the private documentation-only Python 3.10+ baseline")
     for phrase in [
+        ".DEFAULT_GOAL := check",
+        ".PHONY: __repository-make-authority build check lint root-test static-check test verify",
+        ".SECONDEXPANSION:",
+        "$(error MAKEFLAGS must not be overridden for repository verification)",
+        "$(error non-executing or error-ignoring MAKEFLAGS are not supported for repository verification)",
+        "$(error MAKEFILES must be empty; repository verification requires this Makefile to be loaded alone)",
         "ifneq ($(origin MAKEFILE_LIST),file)",
         "$(error MAKEFILE_LIST must not be overridden)",
-        "override REPO_ROOT := $(shell path=",
+        "override EXPECTED_MAKEFILE_LIST := $(value MAKEFILE_LIST)",
+        "override CURRENT_MAKEFILE_LIST = $(value MAKEFILE_LIST)",
+        "override REPO_ROOT := $(shell path='$(subst ','\"'\"',$(REPOSITORY_MAKEFILE))'",
         "export REPO_ROOT",
-        ".PHONY: build check lint root-test static-check test verify",
-        "check: verify",
-        "verify: static-check root-test",
-        "lint test build: static-check",
+        "build check lint root-test static-check test verify:: __repository-make-authority",
+        "__repository-make-authority::",
+        "multiple -f Makefiles are not supported",
+        "check:: verify",
+        "verify:: static-check root-test",
+        "lint test build:: static-check",
         'PYTHONDONTWRITEBYTECODE=1 $(PYTHON) "$$REPO_ROOT/scripts/check-baseline.py"',
         'cd "$$REPO_ROOT" && PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_repository_policy',
         'cd "$$REPO_ROOT" && PYTHONDONTWRITEBYTECODE=1 $(PYTHON) -m unittest -v tests.test_makefile_root',
         "$(PYTHON) -m unittest -v tests.test_makefile_root",
     ]:
         if phrase not in makefile:
-            failures.append(f"Makefile must include standard gate alias: {phrase}")
+            failures.append(f"Makefile must include invocation authority: {phrase}")
 
     docs = "\n".join(read(path) for path in ["README.md", "SECURITY.md", "VISION.md"])
     for phrase in [
@@ -272,6 +284,8 @@ def main():
         "request validation and resource limits",
         "wire and decompressed",
         "absolute path from another directory",
+        "additional `-f` files",
+        "non-executing or error-ignoring modes",
     ]:
         if phrase.lower() not in docs.lower():
             failures.append(f"docs must mention {phrase}")
@@ -565,6 +579,44 @@ def main():
         if evidence not in location_make_verification:
             failures.append(
                 f"location-independent Make verification must record {evidence}"
+            )
+
+    make_authority_plan = read(MAKE_AUTHORITY_PLAN)
+    make_authority_status = re.findall(
+        r"(?mi)^status:\s*(.+?)\s*$", make_authority_plan
+    )
+    make_authority_implementation = markdown_section(
+        make_authority_plan, "Implementation"
+    )
+    make_authority_verification = markdown_section(
+        make_authority_plan, "Verification Completed"
+    )
+    if make_authority_status != ["completed"] or not make_authority_implementation:
+        failures.append(
+            "Make invocation authority plan must record one completed status "
+            "and implementation"
+        )
+    if not make_authority_verification or re.search(
+        r"(?i)\b(?:pending|todo|tbd|not run)\b", make_authority_verification
+    ):
+        failures.append("Make invocation authority plan must record completed verification")
+    for evidence in [
+        "eight Make root tests",
+        "repository policy tests",
+        "ten non-executing and error-ignoring modes",
+        "single-colon replacement",
+        "double-colon append",
+        "make check",
+        "external working directory",
+        "git diff --check",
+        "Python compilation",
+        "generated-artifact",
+        "conflict-marker",
+        "secret-shaped-content",
+    ]:
+        if evidence not in make_authority_verification:
+            failures.append(
+                f"Make invocation authority verification must record {evidence}"
             )
 
     try:
