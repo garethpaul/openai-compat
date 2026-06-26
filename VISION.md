@@ -54,6 +54,8 @@ Priority:
 - Keep verification workspaces free of generated Python bytecode
 - Keep the docs-only compatibility contract enforced in pinned, read-only,
   credential-free hosted Linux CI
+- Keep the Make entry point isolated from later recipe replacement and
+  false-green non-executing or error-ignoring modes
 
 Next priorities:
 

@@ -1,5 +1,61 @@
 # Changes
 
+## 2026-06-26 13:57:32 PDT - P1 - Make repository verification authoritative
+
+### Summary
+
+Closed a false-green verification boundary where a later `-f` Makefile could
+replace public leaf recipes, or GNU Make execution modes could suppress or
+ignore the repository-owned policy commands.
+
+### Work completed
+
+- Converted public targets to guarded double-colon rules with a repository
+  authority prerequisite.
+- Rejected later single-colon replacement, later double-colon append,
+  preloaded Makefiles, caller `MAKEFLAGS`, and ten non-executing or
+  error-ignoring modes.
+- Replaced dry-run-only root assertions with live minimal-fixture executions.
+- Extended the sparse baseline and hostile repository-policy regressions.
+
+### Threads
+
+- None; the focused Make authority work was completed directly.
+
+### Files changed
+
+- `Makefile` — own public target execution and reject unsafe invocation modes.
+- `tests/test_makefile_root.py` and `tests/test_repository_policy.py` — cover
+  replacement, append, mode, override, live path, and policy mutation behavior.
+- `scripts/check-baseline.py` — freeze the reviewed authority boundary and its
+  completed evidence.
+- `README.md`, `SECURITY.md`, `VISION.md`, `AGENTS.md`, and
+  `docs/plans/2026-06-26-make-invocation-authority.md` — document behavior and
+  evidence.
+
+### Validation
+
+- Full sparse baseline, repository-policy, Make authority, external-directory,
+  Python compilation, and diff checks — recorded in the completed plan.
+
+### Bugs / findings
+
+- Fixed P1 false-green verification through later Makefile recipe replacement.
+- Fixed P1 false-green verification through dry-run, touch, question, and
+  ignore-error modes.
+- No runtime compatibility behavior, model mapping, API schema, credential
+  handling, or network semantics changed.
+
+### Blockers
+
+- Codex review authentication is unavailable in this environment; attempt it
+  once after the pull request is open, then rely on local and hosted gates.
+
+### Next action
+
+- Merge only the exact hosted-green pull-request head, then continue repository
+  triage.
+
 ## 2026-06-21
 
 - Made absolute Makefile verification safe for spaces and apostrophes,

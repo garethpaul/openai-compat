@@ -76,6 +76,9 @@ and tests proving credentials and sensitive payload fragments remain absent.
 Run `make lint`, `make test`, `make build`, and `make check` before changing
 the sparse baseline. Generated Python bytecode is local tooling output and
 should not remain after verification.
+Invoke repository verification with this Makefile alone. Additional `-f`
+files, preloaded Makefiles, caller `MAKEFLAGS`, and non-executing or
+error-ignoring modes fail closed before policy commands run.
 Pinned, read-only hosted Linux validation uses a credential-free checkout and
 enforces the same docs-only sparse allowlist without persisted repository
 credentials, API credentials, dependencies, or live OpenAI requests.

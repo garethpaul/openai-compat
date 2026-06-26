@@ -43,6 +43,8 @@
 - The scan did not identify production authentication, payment, or secret-management code. Treat future additions in those areas as security-sensitive.
 - Any future OpenAI-compatible proxy or SDK shim should define a compatibility contract and contract tests before claiming drop-in behavior.
 - Non-goals must stay explicit until an endpoint contract and tests replace them with implemented behavior.
+- Keep Make verification authoritative: reject additional `-f` files, preloaded
+  Makefiles, caller `MAKEFLAGS`, and non-executing or error-ignoring modes.
 
 ## Agent workflow
 
